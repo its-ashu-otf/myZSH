@@ -116,6 +116,9 @@ install_additional_dependencies() {
    sudo apt update
    sudo apt install -y trash-cli bat meld jpico nala xsel xclip
    sudo nala fetch
+   wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.12.0/fastfetch-linux-amd64.deb
+   chmod +x *.deb
+   sudo apt install ./fastfetch-linux-amd64.deb -y
 }
 
 linkConfig() {
