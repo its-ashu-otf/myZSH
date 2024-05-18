@@ -114,7 +114,7 @@ installZoxide() {
 
 install_additional_dependencies() {
    sudo apt update
-   sudo apt install -y trash-cli bat meld jpico nala xsel
+   sudo apt install -y trash-cli bat meld jpico nala xsel xclip
    sudo nala fetch
 }
 
