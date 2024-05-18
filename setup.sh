@@ -143,6 +143,13 @@ installStarship
 installZoxide
 install_additional_dependencies
 
+install_TMUX() {
+cd
+git clone https://github.com/its-ashu-otf/.tmux.git
+ln -s -f .tmux/.tmux.conf
+cp .tmux/.tmux.conf.local .
+}
+
 if linkConfig; then
     echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
 else
