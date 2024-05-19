@@ -26,9 +26,9 @@ cd mybash
 - Navigation Shortcuts: Aliases to simplify directory navigation, e.g., `alias ..='cd ..'` to go up one directory.
 - Safety Features: Aliases for safer file operations, like using trash instead of `rm` for deleting files, to prevent accidental data loss.
 - Extensive Zoxide support: Easily navigate with `z`, `zi`, or pressing Ctrl+f to launch zi to see frequently used navigation directories.
-- Faster APT: Used NALA instead of APT for Great Experience
-- Terminal C/P: PB Copy and paste using xsel for terminal copy and pasting
-- TMUX: Integrated my personal tmux config
+- Faster APT: Used NALA instead of APT for Great Experience.
+- Terminal C/P: PB Copy and paste using xsel for terminal copy and pasting.
+- TMUX: Integrated my personal tmux config.
 
 #### Aliases and Functions
 
