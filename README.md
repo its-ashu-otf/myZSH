@@ -1,5 +1,6 @@
 # myBASH
 My Custom Bash profile - Highly customized Starship Theme
+
 ![gnu_bash_official_logo_icon_169099](https://github.com/its-ashu-otf/myBASH/assets/85825366/d9ff2eaf-7295-4048-a53d-bedfd2a8d3a2)
 
 The .bashrc file is a script that runs every time a new terminal session is started in Unix-like operating systems. It is used to configure the shell session, set up aliases, define functions, and more, making the terminal easier to use and more powerful. Below is a summary of the key sections and functionalities defined in the provided .bashrc file.
