@@ -1,23 +1,22 @@
-# myBASH
+# myZSH
 
-**My Custom Bash profile - Highly customized Starship Theme**
+**My Custom ZSH profile - Highly customized Starship Theme**
 
-![gnu_bash_official_logo_icon_169099](https://github.com/its-ashu-otf/myBASH/assets/85825366/d9ff2eaf-7295-4048-a53d-bedfd2a8d3a2)
 
-The .bashrc file is a script that runs every time a new terminal session is started in Unix-like operating systems. It is used to configure the shell session, set up aliases, define functions, and more, making the terminal easier to use and more powerful. Below is a summary of the key sections and functionalities defined in the provided .bashrc file.
+The .zshrc file is a script that runs every time a new terminal session is started in Unix-like operating systems. It is used to configure the shell session, set up aliases, define functions, and more, making the terminal easier to use and more powerful. Below is a summary of the key sections and functionalities defined in the provided .zshrc file.
 
 # Installation and Configuration Helpers
 
 ```bash
 mkdir -p ~/build
 cd ~/build
-git clone https://github.com/its-ashu-otf/myBASH.git
-cd myBASH
+git clone https://github.com/its-ashu-otf/myZSH.git
+cd myZSH
 chmod +x ./setup.sh
 ./setup.sh
 ```
 
-- **Auto-Install**: A function `install_bashrc_support()` to automatically install necessary utilities based on the system type.
+- **Auto-Install**: A function `install_zshrc_support()` to automatically install necessary utilities based on the system type.
 - **Configuration Editors**: Functions to edit important configuration files directly, e.g., `apacheconfig()` for Apache server configurations.
 
 # Features
@@ -55,4 +54,4 @@ chmod +x ./setup.sh
   
 # Conclusion
 
-This .bashrc file is a comprehensive setup that not only enhances the shell experience with useful aliases and functions but also provides system-specific configurations and safety features to cater to different user needs and system types. It is designed to make the terminal more user-friendly, efficient, and powerful for an average user.
+This .zshrc file is a comprehensive setup that not only enhances the shell experience with useful aliases and functions but also provides system-specific configurations and safety features to cater to different user needs and system types. It is designed to make the terminal more user-friendly, efficient, and powerful for an average user.
