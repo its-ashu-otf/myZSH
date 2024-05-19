@@ -107,7 +107,9 @@ installStarship() {
 }
 
 installZoxide() {
-    sudo apt install zoxide -y
+    sudo apt update
+    sudo apt install zoxide fzf -y
+    
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
@@ -157,9 +159,16 @@ ln -s -f .tmux/.tmux.conf
 cp .tmux/.tmux.conf.local .
 }
 
+install_fonts() {
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
+unzip CascadiaCode.zip
+sudo mv *.ttf /usr/local/share/fonts/
+echo "Fonts Installed"
+}
+
 default_sh() {
 echo "Changing Default Login SHELL to BASH"
-chsh -s /usr/bin/bash
+sudo chsh -s /usr/bin/bash
 }
 
 checkEnv
@@ -168,6 +177,7 @@ installStarship
 installZoxide
 install_additional_dependencies
 install_TMUX
+install_fonts
 default_sh
 
 
