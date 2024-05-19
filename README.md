@@ -12,7 +12,7 @@ The .bashrc file is a script that runs every time a new terminal session is star
 mkdir -p ~/build
 cd ~/build
 git clone https://github.com/its-ashu-otf/myBASH
-cd mybash
+cd myBASH
 ./setup.sh
 ```
 
