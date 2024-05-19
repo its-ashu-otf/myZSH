@@ -320,17 +320,6 @@ precmd() {
 # Call the precmd function to check window size before displaying the prompt
 precmd
 
-# Causes zsh to append to history instead of overwriting it so if you start a new terminal, you have old session history
-
-setopt APPEND_HISTORY
-
-update_history() {
-    history -a
-}
-
-# Run the update_history function after each command
-precmd_functions+='update_history'
-
 # Allow ctrl-S for history navigation (with ctrl-R)
 [[ $- == *i* ]] && stty -ixon
 
