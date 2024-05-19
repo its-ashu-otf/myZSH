@@ -13,6 +13,7 @@ mkdir -p ~/build
 cd ~/build
 git clone https://github.com/its-ashu-otf/myBASH.git
 cd myBASH
+chmod +x ./setup.sh
 ./setup.sh
 ```
 
