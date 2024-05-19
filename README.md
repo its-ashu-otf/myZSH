@@ -11,7 +11,7 @@ The .bashrc file is a script that runs every time a new terminal session is star
 ```bash
 mkdir -p ~/build
 cd ~/build
-git clone https://github.com/its-ashu-otf/myBASH
+git clone [https://github.com/its-ashu-otf/myBASH](https://github.com/its-ashu-otf/myBASH.git)
 cd myBASH
 ./setup.sh
 ```
