@@ -13,22 +13,34 @@ if [ -f /etc/zsh ]; then
 	. /etc/zsh
 fi
 
+########### automaticaly get zsh update from github ###########
+# replace CTT with git username
+REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
+BRANCH="main"  # 
+#
+#  .bashrc file
+ZSHRC_FILE="$HOME/.zshrc"
+
+# temp save bash file
+TEMP_FILE=$(mktemp)
+
+# grab updated zsh 
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
+
+# repalce zsh with new
+if [ -s "$TEMP_FILE" ]; then
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE" # no confirm before saving
+   # mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
+    echo "Updated .zshrc successfully"
+else
+    echo "failed to update .zshrc."
+fi
+####### end of update #########
+
+
 #######################################################
 # EXPORTS
 #######################################################
-
-# export for external package manager
-
-if [ -d "/var/lib/flatpak/exports/bin/" ]; then
-  PATH="/var/lib/flatpak/exports/bin/:$PATH"
-fi
-
-if [ -d "$HOME/.spicetify" ]; then
-  PATH="$HOME/.spicetify:$PATH"
-fi
-
-if [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
-  PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
 # Disable the bell
 if [[ $iatest -gt 0 ]]; then
@@ -44,7 +56,14 @@ export HISTSIZE=500
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
-setopt checkwinsize
+
+# Define precmd function to check window size before displaying prompt
+precmd() {
+    zle && zle reset-prompt
+}
+
+# Call the precmd function to check window size before displaying the prompt
+precmd
 
 # Causes zsh to append to history instead of overwriting it so if you start a new terminal, you have old session history
 
