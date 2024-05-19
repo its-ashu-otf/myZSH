@@ -57,7 +57,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar neovim bat tree multitail fastfetch'
+    DEPENDENCIES='zsh tar bat tree multitail fastfetch'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -115,7 +115,7 @@ installZoxide() {
 
 install_additional_dependencies() {
    sudo apt update
-   sudo apt install -y  joe meld nala xsel bash-completion xclip tar tree multitail
+   sudo apt install -y  joe meld nala xsel xclip tar tree multitail
    sudo pip install git+https://github.com/andreafrancia/trash-cli
    sudo nala fetch
    wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.12.0/fastfetch-linux-amd64.deb
