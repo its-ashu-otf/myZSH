@@ -19,8 +19,12 @@ fi
 # EXPORTS
 #######################################################
 
+
 # Disable the bell
-if [[ $iatest -gt 0 ]]; then bind "set bell-style visible"; fi
+if [[ $iatest -gt 0 ]]; then
+    bindkey "^[Oa" backward-word
+fi
+
 
 # Expand the history size
 export HISTFILESIZE=10000
@@ -30,21 +34,21 @@ export HISTSIZE=500
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
-shopt -s checkwinsize
+setopt checkwinsize
 
 # Causes zsh to append to history instead of overwriting it so if you start a new terminal, you have old session history
-shopt -s histappend
-PROMPT_COMMAND='history -a'
+
+setopt APPEND_HISTORY
+
+update_history() {
+    history -a
+}
+
+# Run the update_history function after each command
+precmd_functions+='update_history'
 
 # Allow ctrl-S for history navigation (with ctrl-R)
 [[ $- == *i* ]] && stty -ixon
-
-# Ignore case on auto-completion
-# Note: bind used instead of sticking these in .inputrc
-if [[ $iatest -gt 0 ]]; then bind "set completion-ignore-case on"; fi
-
-# Show auto-completion list automatically, without double tab
-if [[ $iatest -gt 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 
 # Set the default editor
 export EDITOR=nano  
@@ -569,7 +573,7 @@ alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 # Check if the shell is interactive
 if [[ $- == *i* ]]; then
     # Bind Ctrl+f to insert 'zi' followed by a newline
-    bind '"\C-f":"zi\n"'
+    bindkey '^F' "zi\n"
 fi
 
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
