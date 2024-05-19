@@ -130,7 +130,7 @@ install_additional_dependencies() {
 
 install_fonts() {
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
-unzip CascadiaCode.zip -y
+unzip CascadiaCode.zip
 sudo mv *.ttf /usr/local/share/fonts/
 echo "Fonts Installed"
 }
