@@ -81,6 +81,8 @@ installDepend() {
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
     elif [[ $PACKAGER == "nala" ]]; then
         sudo ${PACKAGER} install -y ${DEPENDENCIES}
+    elif [[ $PACKAGER == "apt" ]]; then
+        sudo ${PACKAGER} install -y ${DEPENDENCIES}
     else
         sudo ${PACKAGER} install -yq ${DEPENDENCIES}
     fi
