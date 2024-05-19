@@ -59,7 +59,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='bash tar neovim bat tree multitail'
+    DEPENDENCIES='bash tar bat tree multitail'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -107,6 +107,7 @@ installStarship() {
 }
 
 installZoxide() {
+    sudo apt install zoxide -y
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
@@ -120,11 +121,14 @@ installZoxide() {
 
 install_additional_dependencies() {
    sudo apt update
-   sudo apt install -y trash-cli bat meld jpico nala xsel bash-completion xclip tar neovim bat tree multitail
+   sudo apt install -y  joe meld nala xsel bash-completion xclip tar tree multitail
+   sudo pip install git+https://github.com/andreafrancia/trash-cli
    sudo nala fetch
    wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.12.0/fastfetch-linux-amd64.deb
+   wget https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
    chmod +x *.deb
    sudo apt install ./fastfetch-linux-amd64.deb -y
+   sudo apt install ./bat_0.24.0_amd64.deb -y
 }
 
 linkConfig() {
