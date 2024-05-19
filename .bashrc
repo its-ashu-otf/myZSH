@@ -632,5 +632,4 @@ fi
 
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
-#eval "$(atuin init bash)"
 eval "$(zoxide init bash)"
