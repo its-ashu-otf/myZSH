@@ -571,9 +571,11 @@ lazyg() {
 #######################################################
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
-bind '"\C-f":"zi\n"'
-
-export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bin:/.local/share/flatpak/exports/bin"
+# Check if the shell is interactive
+if [[ $- == *i* ]]; then
+    # Bind Ctrl+f to insert 'zi' followed by a newline
+    bind '"\C-f":"zi\n"'
+fi
 
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
