@@ -13,32 +13,6 @@ if [ -f /etc/zsh ]; then
 	. /etc/zsh
 fi
 
-########### automaticaly get zsh update from github ###########
-# replace CTT with git username
-REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
-BRANCH="main"  # 
-#
-#  .bashrc file
-ZSHRC_FILE="$HOME/.zshrc"
-
-# temp save bash file
-TEMP_FILE=$(mktemp)
-
-# grab updated zsh 
-curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
-
-# repalce zsh with new
-if [ -s "$TEMP_FILE" ]; then
-    mv -f "$TEMP_FILE" "$ZSHRC_FILE" # no confirm before saving
-   # mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
-    echo "updated .zshrc successfully."
-else
-    echo "failed to update .zshrc."
-fi
-####### end of update #########
-
-
-
 #######################################################
 # EXPORTS
 #######################################################
