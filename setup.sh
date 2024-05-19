@@ -150,12 +150,6 @@ linkConfig() {
     ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
 }
 
-checkEnv
-installDepend
-installStarship
-installZoxide
-install_additional_dependencies
-
 install_TMUX() {
 cd
 git clone https://github.com/its-ashu-otf/.tmux.git
@@ -167,6 +161,15 @@ change_default_sh() {
 echo "Changing Default Login SHELL to BASH"
 chsh -s /usr/bin/bash
 }
+
+checkEnv
+installDepend
+installStarship
+installZoxide
+install_additional_dependencies
+install_TMUX()
+change_default_sh
+
 
 if linkConfig; then
     echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
