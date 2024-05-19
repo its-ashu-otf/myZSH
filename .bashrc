@@ -4,6 +4,32 @@ iatest=$(expr index "$-" i)
 #######################################################
 # SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
 #######################################################
+########### automaticaly get bash update from github ###########
+# replace CTT with git username
+REPO_URL="https://github.com/its-ashu-otf/myBASH.git"
+BRANCH="main"  # 
+#
+#  .bashrc file
+BASHRC_FILE="$HOME/.bashrc"
+
+# temp save bash file
+TEMP_FILE=$(mktemp)
+
+# grab updated bash 
+# replace CTT with git username
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myBASH/main/.bashrc" -o "$TEMP_FILE"
+
+# repalce bash with new
+if [ -s "$TEMP_FILE" ]; then
+    mv -f "$TEMP_FILE" "$BASHRC_FILE" # no confirm before saving
+   # mv  "$TEMP_FILE" "$BASHRC_FILE" # will ask for confrm before saving
+    echo "updated .bashrc successfully."
+else
+    echo "failed to update .bashrc."
+fi
+####### end of update #########
+
+
 if [ -f /usr/bin/fastfetch ]; then
 	fastfetch
 fi
