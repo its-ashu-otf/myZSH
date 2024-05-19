@@ -6,21 +6,19 @@ YELLOW='\e[33m'
 GREEN='\e[32m'
 
 command_exists() {
-  command -v "$1" >/dev/null 2>&1
+    command -v $1 >/dev/null 2>&1
 }
 
 checkEnv() {
     ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
-       for req in ${REQUIREMENTS}; do
-        if ! command_exists ${req}; then
-            echo -e "${RED}To run me, you need: ${REQUIREMENTS}${RC}"
-            exit 1
-        fi
-    done
+    if ! command_exists ${REQUIREMENTS}; then
+        echo -e "${RED}To run me, you need: ${REQUIREMENTS}${RC}"
+        exit 1
+    fi
 
     ## Check Package Handeler
-    PACKAGEMANAGER='nala apt yum dnf pacman zypper'
+    PACKAGEMANAGER='apt yum dnf pacman zypper'
     for pgm in ${PACKAGEMANAGER}; do
         if command_exists ${pgm}; then
             PACKAGER=${pgm}
@@ -29,7 +27,7 @@ checkEnv() {
     done
 
     if [ -z "${PACKAGER}" ]; then
-        echo -e "${RED}Can't find a supported package manager${RC}"
+        echo -e "${RED}Can't find a supported package manager"
         exit 1
     fi
 
@@ -43,23 +41,23 @@ checkEnv() {
     ## Check SuperUser Group
     SUPERUSERGROUP='wheel sudo root'
     for sug in ${SUPERUSERGROUP}; do
-        if groups | (command_exists rg && rg -q ${sug} || grep -q ${sug}); then
+        if groups | grep ${sug}; then
             SUGROUP=${sug}
             echo -e "Super user group ${SUGROUP}"
-            break
         fi
     done
 
     ## Check if member of the sudo group.
-  if ! groups | (command_exists rg && rg -q ${SUGROUP} || grep -q ${SUGROUP}); then
-        echo -e "${RED}You need to be a member of the sudo group to run me!${RC}"
+    if ! groups | grep ${SUGROUP} >/dev/null; then
+        echo -e "${RED}You need to be a member of the sudo group to run me!"
         exit 1
     fi
+
 }
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='bash tar bat tree multitail'
+    DEPENDENCIES='bash bash-completion tar neovim bat tree multitail fastfetch'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -68,7 +66,7 @@ installDepend() {
             cd /opt && sudo git clone https://aur.archlinux.org/yay-git.git && sudo chown -R ${USER}:${USER} ./yay-git
             cd yay-git && makepkg --noconfirm -si
         else
-            echo "AUR helper already installed"
+            echo "Aur helper already installed"
         fi
         if command_exists yay; then
             AUR_HELPER="yay"
@@ -79,10 +77,6 @@ installDepend() {
             exit 1
         fi
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
-    elif [[ $PACKAGER == "nala" ]]; then
-        sudo ${PACKAGER} install -y ${DEPENDENCIES}
-    elif [[ $PACKAGER == "apt" ]]; then
-        sudo ${PACKAGER} install -y ${DEPENDENCIES}
     else
         sudo ${PACKAGER} install -yq ${DEPENDENCIES}
     fi
@@ -107,9 +101,6 @@ installStarship() {
 }
 
 installZoxide() {
-    sudo apt update
-    sudo apt install zoxide fzf -y
-    
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
@@ -123,14 +114,11 @@ installZoxide() {
 
 install_additional_dependencies() {
    sudo apt update
-   sudo apt install -y  joe meld nala xsel bash-completion xclip tar tree multitail
-   sudo pip install git+https://github.com/andreafrancia/trash-cli
+   sudo apt install -y trash-cli bat meld jpico nala xsel xclip
    sudo nala fetch
    wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.12.0/fastfetch-linux-amd64.deb
-   wget https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
    chmod +x *.deb
    sudo apt install ./fastfetch-linux-amd64.deb -y
-   sudo apt install ./bat_0.24.0_amd64.deb -y
 }
 
 linkConfig() {
@@ -152,6 +140,12 @@ linkConfig() {
     ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
 }
 
+checkEnv
+installDepend
+installStarship
+installZoxide
+install_additional_dependencies
+
 install_TMUX() {
 cd
 git clone https://github.com/its-ashu-otf/.tmux.git
@@ -159,27 +153,10 @@ ln -s -f .tmux/.tmux.conf
 cp .tmux/.tmux.conf.local .
 }
 
-install_fonts() {
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
-unzip CascadiaCode.zip
-sudo mv *.ttf /usr/local/share/fonts/
-echo "Fonts Installed"
-}
-
-default_sh() {
+change_default_sh() {
 echo "Changing Default Login SHELL to BASH"
-sudo chsh -s /usr/bin/bash
+chsh -s /usr/bin/bash
 }
-
-checkEnv
-installDepend
-installStarship
-installZoxide
-install_additional_dependencies
-install_TMUX
-install_fonts
-default_sh
-
 
 if linkConfig; then
     echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
