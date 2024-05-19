@@ -157,7 +157,7 @@ ln -s -f .tmux/.tmux.conf
 cp .tmux/.tmux.conf.local .
 }
 
-change_default_sh() {
+default_sh() {
 echo "Changing Default Login SHELL to BASH"
 chsh -s /usr/bin/bash
 }
@@ -167,8 +167,8 @@ installDepend
 installStarship
 installZoxide
 install_additional_dependencies
-install_TMUX()
-change_default_sh
+install_TMUX
+default_sh
 
 
 if linkConfig; then
