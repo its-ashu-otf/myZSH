@@ -57,7 +57,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='bash bash-completion tar neovim bat tree multitail fastfetch'
+    DEPENDENCIES='zsh tar neovim bat tree multitail fastfetch'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -124,19 +124,19 @@ install_additional_dependencies() {
 linkConfig() {
     ## Get the correct user home directory.
     USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
-    ## Check if a bashrc file is already there.
-    OLD_BASHRC="${USER_HOME}/.bashrc"
-    if [[ -e ${OLD_BASHRC} ]]; then
-        echo -e "${YELLOW}Moving old bash config file to ${USER_HOME}/.bashrc.bak${RC}"
-        if ! mv ${OLD_BASHRC} ${USER_HOME}/.bashrc.bak; then
-            echo -e "${RED}Can't move the old bash config file!${RC}"
+    ## Check if a zshrc file is already there.
+    OLD_ZSHRC="${USER_HOME}/.zshrc"
+    if [[ -e ${OLD_ZZSHRC} ]]; then
+        echo -e "${YELLOW}Moving old zsh config file to ${USER_HOME}/.zshrc.bak${RC}"
+        if ! mv ${OLD_ZSHRC} ${USER_HOME}/.zshrc.bak; then
+            echo -e "${RED}Can't move the old zsh config file!${RC}"
             exit 1
         fi
     fi
 
-    echo -e "${YELLOW}Linking new bash config file...${RC}"
+    echo -e "${YELLOW}Linking new zsh config file...${RC}"
     ## Make symbolic link.
-    ln -svf ${GITPATH}/.bashrc ${USER_HOME}/.bashrc
+    ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
     ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
 }
 
@@ -154,8 +154,8 @@ cp .tmux/.tmux.conf.local .
 }
 
 change_default_sh() {
-echo "Changing Default Login SHELL to BASH"
-chsh -s /usr/bin/bash
+echo "Changing Default Login SHELL to ZSH"
+chsh -s /usr/bin/zsh
 }
 
 if linkConfig; then
