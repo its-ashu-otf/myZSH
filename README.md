@@ -17,6 +17,7 @@ cd mybash
 
 - Auto-Install: A function `install_bashrc_support()` to automatically install necessary utilities based on the system type.
 - Configuration Editors: Functions to edit important configuration files directly, e.g., `apacheconfig()` for Apache server configurations.
+
 # Features
 
 #### Enhancements and Utilities
@@ -25,15 +26,20 @@ cd mybash
 - Navigation Shortcuts: Aliases to simplify directory navigation, e.g., `alias ..='cd ..'` to go up one directory.
 - Safety Features: Aliases for safer file operations, like using trash instead of `rm` for deleting files, to prevent accidental data loss.
 - Extensive Zoxide support: Easily navigate with `z`, `zi`, or pressing Ctrl+f to launch zi to see frequently used navigation directories.
+- Faster APT: Used NALA instead of APT for Great Experience
+- Terminal C/P: PB Copy and paste using xsel for terminal copy and pasting
+- TMUX: Integrated my personal tmux config
 
 #### Aliases and Functions
 
 - Aliases: Shortcuts for common commands are set up to enhance productivity. For example, `alias cp='cp -i'` makes the `cp` command interactive, asking for confirmation before overwriting files.
 - Functions: Custom functions for complex operations like `extract()` for extracting various archive types, and `cpp()` for copying files with a progress bar.
+
 #### Prompt Customization and History Management
 
 - Prompt Command: The `PROMPT_COMMAND` variable is set to automatically save the command history after each command.
 - History Control: Settings to manage the size of the history file and how duplicates are handled.
+
 #### System-Specific Aliases and Settings
 
 - Editor Settings: Sets `nano` as the default editor.
