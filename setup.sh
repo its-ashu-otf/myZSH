@@ -153,6 +153,11 @@ ln -s -f .tmux/.tmux.conf
 cp .tmux/.tmux.conf.local .
 }
 
+change_default_sh() {
+echo "Changing Default Login SHELL to BASH"
+chsh -s /usr/bin/bash
+}
+
 if linkConfig; then
     echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
 else
