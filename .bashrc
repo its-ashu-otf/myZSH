@@ -20,9 +20,21 @@ elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
+# Autojump setup
+if [ -f "/usr/share/autojump/autojump.sh" ]; then
+  . /usr/share/autojump/autojump.sh
+elif [ -f "/usr/share/autojump/autojump.bash" ]; then
+  . /usr/share/autojump/autojump.bash
+else
+  echo "Error: Can't find the autojump script"
+fi
+
 #######################################################
 # EXPORTS
 #######################################################
+
+# True Colours
+export TERM="xterm-256color"
 
 # Disable the bell
 if [[ $iatest -gt 0 ]]; then bind "set bell-style visible"; fi
@@ -40,6 +52,19 @@ shopt -s checkwinsize
 # Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
 shopt -s histappend
 PROMPT_COMMAND='history -a'
+
+# export for external package manager
+
+if [ -d "/var/lib/flatpak/exports/bin/" ]; then
+  PATH="/var/lib/flatpak/exports/bin/:$PATH"
+fi
+
+if [ -d "$HOME/.spicetify" ]; then
+  PATH="$HOME/.spicetify:$PATH"
+fi
+
+if [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
+  PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
 # Allow ctrl-S for history navigation (with ctrl-R)
 [[ $- == *i* ]] && stty -ixon
@@ -74,6 +99,7 @@ fi
 # PB Copy & Paste
 alias pbcopy='xsel --input --clipboard'
 alias pbpaste='xsel --output --clipboard'
+alias copydir='pwd | tr -d "\r\n" | pbcopy'
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
@@ -133,7 +159,8 @@ alias mkdir='mkdir -p'
 alias ps='ps auxf'
 alias ping='ping -c 10'
 alias less='less -R'
-alias cls='clear'
+alias cls='clear && colorscript -r'
+alias clear='/bin/clear && colorscript -r'
 alias apt-get='sudo apt-get'
 alias multitail='multitail --no-repeat -c'
 alias freshclam='sudo freshclam'
@@ -579,4 +606,5 @@ fi
 
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
+#eval "$(atuin init bash)"
 eval "$(zoxide init bash)"
