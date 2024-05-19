@@ -9,8 +9,8 @@ The .zshrc file is a script that runs every time a new terminal session is start
 # Installation and Configuration Helpers
 
 ```bash
-mkdir -p ~/build
-cd ~/build
+mkdir -p ~/.build
+cd ~/.build
 git clone https://github.com/its-ashu-otf/myZSH.git
 cd myZSH
 chmod +x ./setup.sh
