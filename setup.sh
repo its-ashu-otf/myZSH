@@ -125,12 +125,12 @@ install_additional_dependencies() {
    chmod +x *.deb
    sudo apt install ./fastfetch-linux-amd64.deb -y
    sudo apt install ./bat_0.24.0_amd64.deb -y
-    sudo apt install ./multitail_7.1.2-1_amd64.deb -y
+   sudo apt install ./multitail_7.1.2-1_amd64.deb -y
 }
 
 install_fonts() {
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
-unzip CascadiaCode.zip
+unzip CascadiaCode.zip -y
 sudo mv *.ttf /usr/local/share/fonts/
 echo "Fonts Installed"
 }
