@@ -1,3 +1,5 @@
+# ~/.zshrc file for zsh interactive shells.
+# see /usr/share/doc/zsh/examples/zshrc for examples
 
 iatest=$(expr index "$-" i)
 
@@ -8,33 +10,32 @@ if [ -f /usr/bin/fastfetch ]; then
 	fastfetch
 fi
 
-########### automaticaly get zsh update from github ###########
-# replace CTT with git username
+########### Automaticaly get zsh update from github ###########
+# Source for zshrc update
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
 BRANCH="main"  # 
 #
-#  .bashrc file
+#  .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
 
 # temp save bash file
 TEMP_FILE=$(mktemp)
 
-# grab updated zsh 
+# grab updated zshrc 
 curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
 
-# repalce zsh with new
+# Repalce ZSHRC with new
+
 if [ -s "$TEMP_FILE" ]; then
-    mv -f "$TEMP_FILE" "$ZSHRC_FILE" # no confirm before saving
-   # mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
+
+# mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
     echo "Updated .zshrc successfully"
 else
     echo "failed to update .zshrc."
 fi
-####### end of update #########
 
-                                                                  
-# ~/.zshrc file for zsh interactive shells.
-# see /usr/share/doc/zsh/examples/zshrc for examples
+####### End of Update #########
 
 setopt autocd              # change directory just by typing its name
 #setopt correct            # auto correct mistakes
@@ -713,14 +714,14 @@ alias whatismyip="whatsmyip"
 function whatsmyip ()
 {
 	# Internal IP Lookup.
-	if [ -e /sbin/ip ]; then
-		echo -n "Internal IP: "
-		/sbin/ip addr show wlan0 | grep "inet " | awk -F: '{print $1}' | awk '{print $2}'
-	else
-		echo -n "Internal IP: "
-		/sbin/ifconfig wlan0 | grep "inet " | awk -F: '{print $1} |' | awk '{print $2}'
-	fi
-
+	
+	# if [ -e /sbin/ip ]; then
+	# 	echo -n "Internal IP: "
+	# 	/sbin/ip addr show wlan0 | grep "inet " | awk -F: '{print $1}' | awk '{print $2}'
+	# else
+	# 	echo -n "Internal IP: "
+	# 	/sbin/ifconfig wlan0 | grep "inet " | awk -F: '{print $1} |' | awk '{print $2}'
+	# fi
 	# External IP Lookup
 	echo -n "External IP: "
 	curl -s ifconfig.me
@@ -815,10 +816,11 @@ lazyg() {
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
 # Check if the shell is interactive
-if [[ $- == *i* ]]; then
-    # Bind Ctrl+f to insert 'zi' followed by a newline
-    bindkey '^F' "zi\n"
-fi
+# if [[ $- == *i* ]]; then
+#     # Bind Ctrl+f to insert 'zi' followed by a newline
+#     bindkey '^F' "zi\n"
+# fi
+bindkey '^F' "zi\n"
 
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
