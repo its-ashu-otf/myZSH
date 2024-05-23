@@ -52,7 +52,7 @@ WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 PROMPT_EOL_MARK=""
 
 # configure key keybindings
-bindkey -e                                        # emacs key bindings
+#bindkey -e                                        # emacs key bindings
 bindkey ' ' magic-space                           # do history expansion on space
 bindkey '^U' backward-kill-line                   # ctrl + U
 bindkey '^[[3;5~' kill-word                       # ctrl + Supr
@@ -816,11 +816,10 @@ lazyg() {
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
 # Check if the shell is interactive
-# if [[ $- == *i* ]]; then
-#     # Bind Ctrl+f to insert 'zi' followed by a newline
-#     bindkey '^F' "zi\n"
-# fi
-bindkey '^F' "echo 'zi'"
+if [[ $- == *i* ]]; then
+    # Bind Ctrl+f to insert 'zi' followed by a newline
+    bindkey '^F' "zi\n"
+fi
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
