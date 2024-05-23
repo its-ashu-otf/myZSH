@@ -52,7 +52,7 @@ WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 PROMPT_EOL_MARK=""
 
 # configure key keybindings
-#bindkey -e                                        # emacs key bindings
+bindkey -e                                        # emacs key bindings
 bindkey ' ' magic-space                           # do history expansion on space
 bindkey '^U' backward-kill-line                   # ctrl + U
 bindkey '^[[3;5~' kill-word                       # ctrl + Supr
@@ -814,6 +814,9 @@ lazyg() {
 #######################################################
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
+
+# Add zoxide to the PATH environment variable
+export PATH="$PATH:$(zoxide query --list)"
 
 # Check if the shell is interactive
 if [[ $- == *i* ]]; then
