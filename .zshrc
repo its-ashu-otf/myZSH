@@ -10,6 +10,10 @@ if [ -f /usr/bin/fastfetch ]; then
 	fastfetch
 fi
 
+#######################################################
+# AUTOUPDATE 
+#######################################################
+
 ########### Automaticaly get zsh update from github ###########
 # Source for zshrc update
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
@@ -37,8 +41,12 @@ fi
 
 ####### End of Update #########
 
+#######################################################
+# ZSH AUTOCOMPLETIONS AND OTHER CONFIGS
+#######################################################
+
 setopt autocd              # change directory just by typing its name
-#setopt correct            # auto correct mistakes
+setopt correct            # auto correct mistakes
 setopt interactivecomments # allow comments in interactive mode
 setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
 setopt nonomatch           # hide error message if there is no match for the pattern
@@ -603,8 +611,8 @@ distribution ()
 			ubuntu|debian)
 				dtype="debian"
 				;;
-			gentoo)
-				dtype="gentoo"
+			kali)
+				dtype="kali"
 				;;
 			arch)
 				dtype="arch"
@@ -797,7 +805,7 @@ trim() {
 	var="${var%"${var##*[![:space:]]}"}" # remove trailing whitespace characters
 	echo -n "$var"
 }
-# GitHub Titus Additions
+# GitHub Additions
 
 gcom() {
 	git add .
