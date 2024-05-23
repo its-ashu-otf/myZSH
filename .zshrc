@@ -820,8 +820,7 @@ alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 #     # Bind Ctrl+f to insert 'zi' followed by a newline
 #     bindkey '^F' "zi\n"
 # fi
-bindkey '^F' "zi\n"
-
+bindkey '^F' "echo 'zi'"
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
