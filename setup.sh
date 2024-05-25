@@ -119,7 +119,7 @@ install_additional_dependencies() {
    sudo apt install -y  joe meld nala xsel xclip tar tree
    sudo pip install git+https://github.com/andreafrancia/trash-cli
    sudo nala fetch
-   wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.12.0/fastfetch-linux-amd64.deb
+   wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.13.2/fastfetch-linux-amd64.deb
    wget https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
    wget http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
    chmod +x *.deb
