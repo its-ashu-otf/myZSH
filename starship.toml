@@ -4,8 +4,6 @@ $python\
 $username\
 [](bg:#434C5E fg:#3B4252)\
 $hostname\
-[](bg:#434C5E fg:#3B4252)\
-$directory\
 [](fg:#434C5E bg:#4C566A)\
 $git_branch\
 $git_status\
@@ -23,7 +21,7 @@ $rust\
 [](fg:#86BBD8 bg:#06969A)\
 $docker_context\
 [](fg:#06969A bg:#33658A)\
-$time\
+$directory\
 [ ](fg:#33658A)\
 """
 command_timeout = 5000
@@ -41,11 +39,11 @@ format = '[$user ㉿]($style)'
 ssh_only = false
 trim_at = "."
 disabled = false
-format = '[@$hostname ](bg:#3B4252)'
+format = '[$hostname ](bg:#434C5E)'
 
 
 [directory]
-style = "bg:#434C5E"
+style = "bg:#33658A"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -131,8 +129,3 @@ symbol = ""
 style = "bg:#86BBD8"
 format = '[ $symbol ($version) ]($style)'
 
-[time]
-disabled = false
-time_format = "%I:%M %P" # Hour:Minute Format
-style = "bg:#33658A"
-format = '[ $time ]($style)'
