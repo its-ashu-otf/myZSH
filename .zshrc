@@ -815,5 +815,6 @@ if [[ $- == *i* ]]; then
     bindkey '^F' "zi"
 fi
 # Shell Integrations
-eval "$(starship init zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(starship init zsh)" # Set up starship for shell prompt
+source <(fzf --zsh) # Set up fzf key bindings and fuzzy completion
+eval "$(zoxide init zsh)" # Set up zoxide for cd command
