@@ -167,19 +167,19 @@ install_additional_dependencies() {
    sudo nala fetch
 
    if ! command_exists fastfetch; then
-       wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.14.0/fastfetch-linux-amd64.deb
+       wget -q --show-progress https://github.com/fastfetch-cli/fastfetch/releases/download/2.14.0/fastfetch-linux-amd64.deb
        chmod +x fastfetch-linux-amd64.deb
        sudo apt install ./fastfetch-linux-amd64.deb -y
    fi
 
    if ! command_exists bat; then
-       wget https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
+       wget -q --show-progress https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
        chmod +x bat_0.24.0_amd64.deb
        sudo apt install ./bat_0.24.0_amd64.deb -y
    fi
 
    if ! command_exists multitail; then
-       wget http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
+       wget -q --show-progress http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
        chmod +x multitail_7.1.2-1_amd64.deb
        sudo apt install ./multitail_7.1.2-1_amd64.deb -y
    fi
@@ -187,10 +187,13 @@ install_additional_dependencies() {
 
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
-    FONT_NAME="CascadiaCode.ttf"
+    FONT_NAME="CaskaydiaCoveNerdFont-Regular.ttf"
     if [ ! -f "$FONT_DIR/$FONT_NAME" ]; then
-        wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
+        echo "Downloading font..."
+        wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
+        echo "Unzipping font..."
         unzip -o CascadiaCode.zip -d extracted_fonts
+        echo "Installing font..."
         sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
         echo "Fonts Installed"
         rm -r extracted_fonts CascadiaCode.zip
