@@ -9,12 +9,9 @@ The .zshrc file is a script that runs every time a new terminal session is start
 # Installation and Configuration Helpers
 
 ```bash
-mkdir -p ~/.zsh
-cd ~/.zsh
-git clone https://github.com/its-ashu-otf/myZSH.git
-cd myZSH
-chmod +x ./setup.sh
-./setup.sh
+
+bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/its-ashu-otf/myZSH/test/setup.sh)"
+
 ```
 
 - **Auto-Install**: A function `install_zshrc_support()` to automatically install necessary utilities based on the system type.
