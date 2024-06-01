@@ -19,7 +19,7 @@ fi
 ########### Automaticaly get zsh update from github ###########
 # Source for zshrc update
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
-BRANCH="main"  # 
+BRANCH="test"  # 
 #
 #  .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
