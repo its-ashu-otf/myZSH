@@ -42,7 +42,7 @@ checkEnv() {
     fi
 
     ## Check Package Handeler
-    PACKAGEMANAGER='apt nala yum dnf pacman zypper'
+    PACKAGEMANAGER='apt yum dnf pacman zypper'
     for pgm in ${PACKAGEMANAGER}; do
         if command_exists ${pgm}; then
             PACKAGER=${pgm}
@@ -145,9 +145,6 @@ install_additional_dependencies() {
    if ! command_exists meld; then
        sudo apt install -y meld
    fi
-   if ! command_exists nala; then
-       sudo apt install -y nala
-   fi
    if ! command_exists xsel; then
        sudo apt install -y xsel
    fi
@@ -164,7 +161,7 @@ install_additional_dependencies() {
        sudo pip install git+https://github.com/andreafrancia/trash-cli
    fi
 
-   sudo nala fetch
+   sudo apt update
 
    if ! command_exists fastfetch; then
        wget -q --show-progress https://github.com/fastfetch-cli/fastfetch/releases/download/2.14.0/fastfetch-linux-amd64.deb

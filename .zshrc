@@ -627,19 +627,6 @@ distribution ()
 	echo $dtype
 }
 
-# Using NALA instead of APT
-apt() { 
-  command nala "$@"
-}
-sudo() {
-  if [ "$1" = "apt" ]; then
-    shift
-    command sudo nala "$@"
-  else
-    command sudo "$@"
-  fi
-}
-
 # Show the current version of the operating system
 ver() {
 	local dtype
