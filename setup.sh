@@ -32,6 +32,7 @@ fetch() {
         cd myZSH
     fi
 }
+
 checkEnv() {
     ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
@@ -139,23 +140,45 @@ installZoxide() {
 
 install_additional_dependencies() {
    sudo apt update
-   sudo apt install -y  joe meld nala xsel xclip tar tree
-   sudo pip install git+https://github.com/andreafrancia/trash-cli
+   sudo apt install -y joe meld nala xsel xclip tar tree
+
+   if ! command_exists trash-put; then
+       sudo pip install git+https://github.com/andreafrancia/trash-cli
+   fi
+
    sudo nala fetch
-   wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.14.0/fastfetch-linux-amd64.deb
-   wget https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
-   wget http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
-   chmod +x *.deb
-   sudo apt install ./fastfetch-linux-amd64.deb -y
-   sudo apt install ./bat_0.24.0_amd64.deb -y
-   sudo apt install ./multitail_7.1.2-1_amd64.deb -y
+
+   if ! command_exists fastfetch; then
+       wget https://github.com/fastfetch-cli/fastfetch/releases/download/2.14.0/fastfetch-linux-amd64.deb
+       chmod +x fastfetch-linux-amd64.deb
+       sudo apt install ./fastfetch-linux-amd64.deb -y
+   fi
+
+   if ! command_exists bat; then
+       wget https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
+       chmod +x bat_0.24.0_amd64.deb
+       sudo apt install ./bat_0.24.0_amd64.deb -y
+   fi
+
+   if ! command_exists multitail; then
+       wget http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
+       chmod +x multitail_7.1.2-1_amd64.deb
+       sudo apt install ./multitail_7.1.2-1_amd64.deb -y
+   fi
 }
 
 install_fonts() {
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
-unzip CascadiaCode.zip
-sudo mv *.ttf /usr/local/share/fonts/
-echo "Fonts Installed"
+    FONT_DIR="/usr/local/share/fonts"
+    FONT_NAME="CascadiaCode.ttf"
+    if [ ! -f "$FONT_DIR/$FONT_NAME" ]; then
+        wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
+        unzip -o CascadiaCode.zip -d extracted_fonts
+        sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
+        echo "Fonts Installed"
+        rm -r extracted_fonts CascadiaCode.zip
+    else
+        echo "Font already installed."
+    fi
 }
 
 linkConfig() {
@@ -178,18 +201,31 @@ linkConfig() {
 }
 
 install_TMUX() {
-    if [ ! -d "$HOME/.tmux" ]; then
-        cd
-        git clone https://github.com/its-ashu-otf/.tmux.git
-    else
-        echo "TMUX configuration already exists."
-    fi
+    read -p "Would you like to install or update the TMUX configuration? [y/N] " install_tmux
+    if [[ "$install_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+        if [ ! -d "$HOME/.tmux" ]; then
+            cd
+            git clone https://github.com/its-ashu-otf/.tmux.git
+        else
+            read -p "TMUX configuration already exists. Would you like to update it? [y/N] " update_tmux
+            if [[ "$update_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]
+            then
+                cd $HOME/.tmux
+                git pull
+            fi
+        fi
 
-    ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
-    if [ ! -f "$HOME/.tmux.conf.local" ]; then
-        cp $HOME/.tmux/.tmux.conf.local $HOME
-    else
-        echo ".tmux.conf.local already exists."
+        ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
+        if [ ! -f "$HOME/.tmux.conf.local" ]; then
+            cp $HOME/.tmux/.tmux.conf.local $HOME
+        else
+            read -p ".tmux.conf.local already exists. Would you like to replace it? [y/N] " replace_tmux_local
+            if [[ "$replace_tmux_local" =~ ^([yY][eE][sS]|[yY])$ ]]
+            then
+                cp $HOME/.tmux/.tmux.conf.local $HOME
+            fi
+        fi
     fi
 }
 
