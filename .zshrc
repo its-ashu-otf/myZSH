@@ -17,6 +17,30 @@ if [ -f /usr/bin/fastfetch ]; then
 fi
 
 #######################################################
+# AUTOUPDATE 
+#######################################################
+
+# Automatically fetch and update zsh configuration from GitHub
+REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
+BRANCH="test"
+
+ZSHRC_FILE="$HOME/.zshrc"
+TEMP_FILE=$(mktemp)
+
+# Download the latest .zshrc from the repository
+curl -sSL "$REPO_URL/raw/$BRANCH/.zshrc" -o "$TEMP_FILE"
+
+# Replace the current .zshrc with the new one if the download is successful
+if [ -s "$TEMP_FILE" ]; then
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE"
+    echo "Updated .zshrc successfully."
+else
+    echo "Failed to update .zshrc."
+fi
+
+####### End of Update #########
+
+#######################################################
 # ZSH AUTOCOMPLETIONS AND OTHER CONFIGS
 #######################################################
 
@@ -791,5 +815,4 @@ if [[ $- == *i* ]]; then
 fi
 # Shell Integrations
 eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-
+eval "$(zoxide init --cmd cd zsh)"
