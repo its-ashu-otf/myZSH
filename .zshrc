@@ -16,11 +16,14 @@ if [ -f /usr/bin/fastfetch ]; then
     fastfetch
 fi
 
-########### Automaticaly get zsh update from github ###########
+###############################################################
+#			AUTOUPDATE			      #
+###############################################################
+
 # Source for zshrc update
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
-BRANCH="test"  # 
-#
+BRANCH="test" 
+
 #  .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
 
@@ -28,7 +31,7 @@ ZSHRC_FILE="$HOME/.zshrc"
 TEMP_FILE=$(mktemp)
 
 # grab updated zshrc 
-curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/test/.zshrc" -o "$TEMP_FILE"
 
 # Repalce ZSHRC with new
 
@@ -36,13 +39,13 @@ if [ -s "$TEMP_FILE" ]; then
     mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
 
 # mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
-    echo "Updated .zshrc successfully"
+    echo "Updated .zshrc Successfully"
 else
-    echo "failed to update .zshrc."
+    echo "Failed to Update .zshrc."
 fi
 
 #######################################################
-# ZSH AUTOCOMPLETIONS AND OTHER CONFIGS
+# 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
 #######################################################
 
 setopt autocd              # change directory just by typing its name
@@ -668,41 +671,6 @@ ver() {
 	esac
 }
 
-# Automatically install the needed support files for this .zshrc file
-install_zshrc_support() {
-	local dtype
-	dtype=$(distribution)
-
-	case $dtype in
-		"redhat")
-			sudo yum install multitail tree zoxide trash-cli fzf fastfetch
-			;;
-		"suse")
-			sudo zypper install multitail tree zoxide trash-cli fzf  fastfetch
-			;;
-		"debian")
-			sudo apt-get install multitail tree zoxide trash-cli fzf
-			# Fetch the latest fastfetch release URL for linux-amd64 deb file
-			FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
-			
-			# Download the latest fastfetch deb file
-			curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
-			
-			# Install the downloaded deb file using apt-get
-			sudo apt-get install /tmp/fastfetch_latest_amd64.deb
-			;;
-		"arch")
-			sudo paru multitail tree zoxide trash-cli fzf fastfetch
-			;;
-		"slackware")
-			echo "No install support for Slackware"
-			;;
-		*)
-			echo "Unknown distribution"
-			;;
-	esac
-}
-
 # IP address lookup
 alias whatismyip="whatsmyip"
 function whatsmyip ()
@@ -804,7 +772,7 @@ lazyg() {
 }
 
 #######################################################
-# Set the ultimate amazing command prompt
+# 	Set the ultimate amazing command prompt	      #
 #######################################################
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
@@ -814,6 +782,9 @@ if [[ $- == *i* ]]; then
     # Bind Ctrl+f to insert 'zi' followed by a newline
     bindkey '^F' "zi"
 fi
-# Shell Integrations
+
+#######################################################
+# 		Shell Integrations		      #
+#######################################################
 eval "$(starship init zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
