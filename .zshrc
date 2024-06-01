@@ -28,8 +28,7 @@ ZSHRC_FILE="$HOME/.zshrc"
 TEMP_FILE=$(mktemp)
 
 # Download the latest .zshrc from the repository
-curl -sSL "$REPO_URL/raw/$BRANCH/.zshrc" -o "$TEMP_FILE"
-
+curl -sSL "${REPO_URL}/raw/${BRANCH}/.zshrc" -o "${TEMP_FILE}"
 # Replace the current .zshrc with the new one if the download is successful
 if [ -s "$TEMP_FILE" ]; then
     mv -f "$TEMP_FILE" "$ZSHRC_FILE"
@@ -815,4 +814,5 @@ if [[ $- == *i* ]]; then
 fi
 # Shell Integrations
 eval "$(starship init zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
+
