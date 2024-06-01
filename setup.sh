@@ -9,6 +9,29 @@ command_exists() {
     command -v $1 >/dev/null 2>&1
 }
 
+fetch() {
+    ## Fetching Repo
+    REPO_DIR="$HOME/.zsh/myZSH"
+    if [ -d "$REPO_DIR" ]; then
+        echo "Repository already exists. Checking for updates..."
+        cd "$REPO_DIR"
+        git fetch origin
+        LOCAL=$(git rev-parse @)
+        REMOTE=$(git rev-parse @{u})
+        if [ $LOCAL = $REMOTE ]; then
+            echo "Repository is up to date."
+        else
+            echo "Updating repository..."
+            git pull
+        fi
+    else
+        echo "Repository does not exist. Cloning..."
+        mkdir -p "$HOME/.zsh"
+        cd "$HOME/.zsh"
+        git clone https://github.com/its-ashu-otf/myZSH.git
+        cd myZSH
+    fi
+}
 checkEnv() {
     ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
@@ -102,7 +125,7 @@ installStarship() {
 
 installZoxide() {
     sudo apt update
-    sudo apt install zoxide fzf -y
+    sudo apt install fzf -y
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
@@ -155,17 +178,24 @@ linkConfig() {
 }
 
 install_TMUX() {
-cd
-git clone https://github.com/its-ashu-otf/.tmux.git
-ln -s -f .tmux/.tmux.conf
-cp .tmux/.tmux.conf.local .
+    if [ ! -d "$HOME/.tmux" ]; then
+        cd
+        git clone https://github.com/its-ashu-otf/.tmux.git
+    else
+        echo "TMUX configuration already exists."
+    fi
+
+    ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
+    if [ ! -f "$HOME/.tmux.conf.local" ]; then
+        cp $HOME/.tmux/.tmux.conf.local $HOME
+    else
+        echo ".tmux.conf.local already exists."
+    fi
 }
 
-change_default_sh() {
-echo "Changing Default Login SHELL to ZSH"
-chsh -s /usr/bin/zsh
-}
+# Function Calls
 
+fetch
 checkEnv
 installDepend
 installStarship
@@ -173,7 +203,7 @@ installZoxide
 install_additional_dependencies
 install_fonts
 install_TMUX
-change_default_sh
+
 
 if linkConfig; then
     echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
