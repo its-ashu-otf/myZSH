@@ -139,9 +139,27 @@ installZoxide() {
 }
 
 install_additional_dependencies() {
-   sudo apt update
-   sudo apt install -y joe meld nala xsel xclip tar tree
-
+   if ! command_exists joe; then
+       sudo apt install -y joe
+   fi
+   if ! command_exists meld; then
+       sudo apt install -y meld
+   fi
+   if ! command_exists nala; then
+       sudo apt install -y nala
+   fi
+   if ! command_exists xsel; then
+       sudo apt install -y xsel
+   fi
+   if ! command_exists xclip; then
+       sudo apt install -y xclip
+   fi
+   if ! command_exists tar; then
+       sudo apt install -y tar
+   fi
+   if ! command_exists tree; then
+       sudo apt install -y tree
+   fi
    if ! command_exists trash-put; then
        sudo pip install git+https://github.com/andreafrancia/trash-cli
    fi
