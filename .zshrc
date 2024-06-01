@@ -20,21 +20,29 @@ fi
 # AUTOUPDATE 
 #######################################################
 
-# Automatically fetch and update zsh configuration from GitHub
+########### Automaticaly get zsh update from github ###########
+# Source for zshrc update
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
-BRANCH="main"
-
+BRANCH="main"  # 
+#
+#  .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
+
+# temp save bash file
 TEMP_FILE=$(mktemp)
 
-# Download the latest .zshrc from the repository
-curl -sSL "${REPO_URL}/raw/${BRANCH}/.zshrc" -o "${TEMP_FILE}"
-# Replace the current .zshrc with the new one if the download is successful
+# grab updated zshrc 
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
+
+# Repalce ZSHRC with new
+
 if [ -s "$TEMP_FILE" ]; then
-    mv -f "$TEMP_FILE" "$ZSHRC_FILE"
-    echo "Updated .zshrc successfully."
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
+
+# mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
+    echo "Updated .zshrc successfully"
 else
-    echo "Failed to update .zshrc."
+    echo "failed to update .zshrc."
 fi
 
 ####### End of Update #########
