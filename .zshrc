@@ -16,6 +16,31 @@ if [ -f /usr/bin/fastfetch ]; then
     fastfetch
 fi
 
+########### Automaticaly get zsh update from github ###########
+# Source for zshrc update
+REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
+BRANCH="test"  # 
+#
+#  .zshrc file
+ZSHRC_FILE="$HOME/.zshrc"
+
+# temp save bash file
+TEMP_FILE=$(mktemp)
+
+# grab updated zshrc 
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
+
+# Repalce ZSHRC with new
+
+if [ -s "$TEMP_FILE" ]; then
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
+
+# mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
+    echo "Updated .zshrc successfully"
+else
+    echo "failed to update .zshrc."
+fi
+
 #######################################################
 # ZSH AUTOCOMPLETIONS AND OTHER CONFIGS
 #######################################################
