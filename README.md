@@ -9,16 +9,14 @@ The .zshrc file is a script that runs every time a new terminal session is start
 # Installation and Configuration Helpers
 
 ```bash
-bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/its-ashu-otf/myZSH/test/setup.sh)"
+bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/setup.sh)"
 ```
-
-- **Auto-Install**: A function `install_zshrc_support()` to automatically install necessary utilities based on the system type.
-- **Configuration Editors**: Functions to edit important configuration files directly, e.g., `apacheconfig()` for Apache server configurations.
 
 # Features
 
 #### Enhancements and Utilities
 
+- **Configuration Editors**: Functions to edit important configuration files directly, e.g., `apacheconfig()` for Apache server configurations
 - **Color and Formatting**: Enhancements for command output readability using colors and formatting for tools like `ls`, `grep`, and `man`.
 - **Navigation Shortcuts**: Aliases to simplify directory navigation, e.g., `alias ..='cd ..'` to go up one directory.
 - **Safety Features**: Aliases for safer file operations, like using trash instead of `rm` for deleting files, to prevent accidental data loss.
