@@ -1,42 +1,41 @@
 # ~/.zshrc file for zsh interactive shells.
 # see /usr/share/doc/zsh/examples/zshrc for examples
 
-iatest=$(expr index "$-" i)
+# Check if the shell is interactive
+if [[ $- == *i* ]]; then
+    iatest=1
+else
+    iatest=0
+fi
 
 #######################################################
-# SOURCED ALIAS'S AND SCRIPTS
+# SOURCED ALIASES AND SCRIPTS
 #######################################################
+# Execute fastfetch if available
 if [ -f /usr/bin/fastfetch ]; then
-	fastfetch
+    fastfetch
 fi
 
 #######################################################
 # AUTOUPDATE 
 #######################################################
 
-########### Automaticaly get zsh update from github ###########
-# Source for zshrc update
+# Automatically fetch and update zsh configuration from GitHub
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
-BRANCH="main"  # 
-#
-#  .zshrc file
-ZSHRC_FILE="$HOME/.zshrc"
+BRANCH="main"
 
-# temp save bash file
+ZSHRC_FILE="$HOME/.zshrc"
 TEMP_FILE=$(mktemp)
 
-# grab updated zshrc 
-curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
+# Download the latest .zshrc from the repository
+curl -sSL "$REPO_URL/raw/$BRANCH/.zshrc" -o "$TEMP_FILE"
 
-# Repalce ZSHRC with new
-
+# Replace the current .zshrc with the new one if the download is successful
 if [ -s "$TEMP_FILE" ]; then
-    mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
-
-# mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
-    echo "Updated .zshrc successfully"
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE"
+    echo "Updated .zshrc successfully."
 else
-    echo "failed to update .zshrc."
+    echo "Failed to update .zshrc."
 fi
 
 ####### End of Update #########
@@ -722,13 +721,13 @@ function whatsmyip ()
 {
 	# Internal IP Lookup.
 	
-	# if [ -e /sbin/ip ]; then
-	# 	echo -n "Internal IP: "
-	# 	/sbin/ip addr show wlan0 | grep "inet " | awk -F: '{print $1}' | awk '{print $2}'
-	# else
-	# 	echo -n "Internal IP: "
-	# 	/sbin/ifconfig wlan0 | grep "inet " | awk -F: '{print $1} |' | awk '{print $2}'
-	# fi
+	if [ -e /sbin/ip ]; then
+		echo -n "Internal IP: "
+		/sbin/ip addr show wlan0 | grep "inet " | awk '{print $2}' | cut -d'/' -f1
+	else
+		echo -n "Internal IP: "
+		/sbin/ifconfig wlan0 | grep "inet " | awk '{print $2}'
+	fi
 	# External IP Lookup
 	echo -n "External IP: "
 	curl -s ifconfig.me
@@ -827,6 +826,6 @@ if [[ $- == *i* ]]; then
     # Bind Ctrl+f to insert 'zi' followed by a newline
     bindkey '^F' "zi"
 fi
-# Install Starship - curl -sS https://starship.rs/install.sh | sh
+# Shell Integrations
 eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
