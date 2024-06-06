@@ -788,4 +788,5 @@ fi
 #######################################################
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
+eval "$(atuin init zsh)"
+
