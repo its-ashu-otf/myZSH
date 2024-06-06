@@ -31,7 +31,7 @@ ZSHRC_FILE="$HOME/.zshrc"
 TEMP_FILE=$(mktemp)
 
 # grab updated zshrc 
-curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/test/.zshrc" -o "$TEMP_FILE"
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
 
 # Repalce ZSHRC with new
 
