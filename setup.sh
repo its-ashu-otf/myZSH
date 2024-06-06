@@ -148,6 +148,17 @@ installStarship() {
     fi
 }
 
+installatuin() {
+    if command_exists autuin; then
+        echo "Autuin already installed"
+        return
+    fi
+
+    if ! bash <(curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh) && atuin import auto; then
+        echo -e "${RED}Something went wrong during starship install!${RC}"
+        exit 1
+}
+
 installZoxide() {
     sudo apt install zoxide fzf -y
     if command_exists zoxide; then
