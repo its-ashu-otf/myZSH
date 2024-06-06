@@ -777,16 +777,12 @@ lazyg() {
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
-# Check if the shell is interactive
-if [[ $- == *i* ]]; then
-    # Bind Ctrl+f to insert 'zi' followed by a newline
-    bindkey '^F' "zi"
-fi
-
 #######################################################
 # 		Shell Integrations		      #
 #######################################################
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
+eval "$(atuin init zsh)"
+
+
 
