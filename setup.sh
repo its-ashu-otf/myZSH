@@ -149,7 +149,7 @@ installStarship() {
 }
 
 installZoxide() {
-    sudo apt install fzf -y
+    sudo apt install zoxide fzf -y
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
@@ -187,15 +187,13 @@ install_additional_dependencies() {
    sudo apt update
 
    if ! command_exists fastfetch; then
-       wget -q --show-progress https://github.com/fastfetch-cli/fastfetch/releases/download/2.14.0/fastfetch-linux-amd64.deb
-       chmod +x fastfetch-linux-amd64.deb
-       sudo apt install ./fastfetch-linux-amd64.deb -y
+	    FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
+       	curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
+		sudo apt install /tmp/fastfetch_latest_amd64.deb -y
    fi
 
    if ! command_exists bat; then
-       wget -q --show-progress https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
-       chmod +x bat_0.24.0_amd64.deb
-       sudo apt install ./bat_0.24.0_amd64.deb -y
+		sudo apt install bat -y
    fi
 
    if ! command_exists multitail; then
