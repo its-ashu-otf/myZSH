@@ -159,12 +159,6 @@ installZoxide() {
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
-    fi
-
-    if ! curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh; then
-        echo -e "${RED}Something went wrong during zoxide install!${RC}"
-        exit 1
-    fi
 }
 
 install_additional_dependencies() {
