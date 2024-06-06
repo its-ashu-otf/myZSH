@@ -155,7 +155,7 @@ installatuin() {
 }
 
 installZoxide() {
-    sudo apt install zoxide fzf -y
+    sudo apt install zoxide fzf ranger -y
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
