@@ -149,14 +149,9 @@ installStarship() {
 }
 
 installatuin() {
-    if command_exists autuin; then
-        echo "Autuin already installed"
-        return
-    fi
+bash <(curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh)
 
-    if ! bash <(curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh) && atuin import auto; then
-        echo -e "${RED}Something went wrong during starship install!${RC}"
-        exit 1
+atuin import auto
 }
 
 installZoxide() {
@@ -285,6 +280,7 @@ fetch
 checkEnv
 installDepend
 installStarship
+installatuin
 installZoxide
 install_additional_dependencies
 install_fonts
