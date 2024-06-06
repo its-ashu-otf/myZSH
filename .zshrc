@@ -777,9 +777,23 @@ lazyg() {
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
-bindkey '^r' zi
+# ctrl + f for zi
+zoxide_to_ranger () {
+    eval 'ranger "$(zoxide query -i)" --choosedir=$HOME/.rangerdir < $TTY'
+    LASTDIR=$(< ~/.rangerdir)
+    cd "$LASTDIR" || exit
 
+    local precmd
+    for precmd in $precmd_functions; do
+      $precmd
+    done
+    zle reset-prompt
+}
 
+zle -N zoxide_to_ranger
+bindkey '^f' zoxide_to_ranger
+
+# Atuin Bind for ctrl + r
 export ATUIN_NOBIND="true"
 bindkey '^r' atuin-search
 
