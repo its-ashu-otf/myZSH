@@ -290,6 +290,12 @@ fi
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
+alias labc='ls -lap'              # alphabetical sort
+alias lla='ls -Al'                # List and Hidden Files
+alias las='ls -A'                 # Hidden Files
+alias lls='ls -l'                 # List
+alias lc='ls -ltcrh'              # sort by change time
+alias lu='ls -lturh'              # sort by access time
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
