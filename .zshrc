@@ -803,6 +803,8 @@ function hb {
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
+echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
+
 # ctrl + f for zi
 zoxide_to_ranger () {
     eval 'ranger "$(zoxide query -i)" --choosedir=$HOME/.rangerdir < $TTY'
@@ -831,7 +833,6 @@ bindkey '^[OA' atuin-up-search
 #######################################################
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
 
 
 
