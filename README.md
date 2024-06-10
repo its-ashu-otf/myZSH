@@ -22,6 +22,7 @@ bash -c "$(curl --fail --show-error --silent --location https://raw.githubuserco
 - **Extensive Zoxide support**: Easily navigate with `z`, `zi`, or pressing Ctrl+f to launch zi to see frequently used navigation directories.
 - **Terminal C/P**: PB Copy and paste using xsel for terminal copy and pasting.
 - **TMUX**: Integrated my personal tmux config.
+- **Atuin Search**: Integrated Atuin Search 
 
 #### Aliases and Functions
 
