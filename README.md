@@ -1,6 +1,5 @@
 ## myZSH
 
-**My Custom ZSH profile - Highly customized Starship Theme**
 
 The .zshrc file is a script that runs every time a new terminal session is started in Unix-like operating systems. It is used to configure the shell session, set up aliases, define functions, and more, making the terminal easier to use and more powerful. Below is a summary of the key sections and functionalities defined in the provided .zshrc file.
 
