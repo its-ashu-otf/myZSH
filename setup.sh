@@ -282,6 +282,7 @@ installDepend
 installStarship
 installatuin
 installZoxide
+linkConfig
 install_additional_dependencies
 install_fonts
 install_TMUX
