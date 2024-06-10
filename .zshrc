@@ -22,7 +22,7 @@ fi
 
 # Source for zshrc update
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
-BRANCH="test" 
+BRANCH="main" 
 
 #  .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
