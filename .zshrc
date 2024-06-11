@@ -16,7 +16,6 @@ if [ -f /usr/bin/fastfetch ]; then
     fastfetch
 fi
 
-echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
 ###############################################################
 #			AUTOUPDATE			      #
 ###############################################################
@@ -804,13 +803,6 @@ function hb {
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
-#######################################################
-# 		Shell Integrations		      #
-#######################################################
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-
-
 # ctrl + f for zi
 zoxide_to_ranger () {
     eval 'ranger "$(zoxide query -i)" --choosedir=$HOME/.rangerdir < $TTY'
@@ -834,3 +826,11 @@ bindkey '^r' atuin-search
 # bind to the up key, which depends on terminal mode
 bindkey '^[[A' atuin-up-search
 bindkey '^[OA' atuin-up-search
+
+#######################################################
+# 		Shell Integrations		      #
+#######################################################
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
+
