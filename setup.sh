@@ -57,6 +57,12 @@ fetch() {
     fi
 }
 
+installatuin() {
+    wget https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh 
+    bash ./install.sh
+    atuin import auto
+}
+
 checkEnv() {
     ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
@@ -146,12 +152,6 @@ installStarship() {
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install
     fi
-}
-
-installatuin() {
-    wget https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh 
-    bash ./install.sh
-    atuin import auto
 }
 
 installZoxide() {
@@ -277,10 +277,10 @@ install_TMUX() {
 # Function Calls
 
 fetch
+installatuin
 checkEnv
 installDepend
 installStarship
-installatuin
 installZoxide
 linkConfig
 install_additional_dependencies
