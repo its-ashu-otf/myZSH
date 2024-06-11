@@ -203,8 +203,7 @@ install_additional_dependencies() {
    fi
 }
 
-install_Atuin_Search()
-{
+install_Atuin_Search() {
 /bin/bash -c "$(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)"
 }
 
