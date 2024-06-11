@@ -57,12 +57,6 @@ fetch() {
     fi
 }
 
-installatuin() {
-    wget https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh 
-    bash ./install.sh
-    atuin import auto
-}
-
 checkEnv() {
     ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
@@ -205,7 +199,7 @@ install_additional_dependencies() {
    if ! command_exists multitail; then
        wget -q --show-progress http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
        chmod +x multitail_7.1.2-1_amd64.deb
-       sudo apt install ./multitail_7.1.2-1_amd64.deb -y
+       sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
    fi
 }
 
@@ -277,7 +271,6 @@ install_TMUX() {
 # Function Calls
 
 fetch
-installatuin
 checkEnv
 installDepend
 installStarship
