@@ -369,7 +369,7 @@ function ifconfig() {
 }
 
 function ii() {
-    ifconfig eth0 | sed -E 's/([0-9]{1,3}\.){3}[0-9]{1,3}/\x1b[35m&\x1b[0m/g; s/([a-f0-9]{1,4}:){7}[a-f0-9]{1,4}/\x1b[36m&\x1b[0m/g; s/inet6\x20([a-f0-9:]+)\x20/ \x1b[34m&\x1b[0m /g; s/inet\x20/ \x1b[33m&\x1b[0m>
+    ifconfig | sed -E 's/([0-9]{1,3}\.){3}[0-9]{1,3}/\x1b[35m&\x1b[0m/g; s/([a-f0-9]{1,4}:){7}[a-f0-9]{1,4}/\x1b[36m&\x1b[0m/g; s/inet6\x20([a-f0-9:]+)\x20/ \x1b[34m&\x1b[0m /g; s/inet\x20/ \x1b[33m&\x1b[0m>
 }
 
 # Add an "alert" alias for long running commands.  Use like so:
