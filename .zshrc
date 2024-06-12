@@ -11,10 +11,12 @@ fi
 #######################################################
 # SOURCED ALIASES AND SCRIPTS
 #######################################################
+
 # Execute fastfetch if available
-if [ -f /usr/bin/fastfetch ]; then
+if [ -x "$(command -v fastfetch)" ]; then
     fastfetch
 fi
+
 
 source $HOME/.atuin/bin/env 
 ###############################################################
@@ -25,21 +27,20 @@ source $HOME/.atuin/bin/env
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
 BRANCH="main" 
 
-#  .zshrc file
+# .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
 
 # temp save bash file
 TEMP_FILE=$(mktemp)
 
 # grab updated zshrc 
-curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
+curl -sSL "$REPO_URL/raw/$BRANCH/.zshrc" -o "$TEMP_FILE"
 
-# Repalce ZSHRC with new
-
+# Replace ZSHRC with new
 if [ -s "$TEMP_FILE" ]; then
-    mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE" # no confirm before saving
 
-# mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
+    # mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confirm before saving
     echo "Updated .zshrc Successfully"
 else
     echo "Failed to Update .zshrc."
@@ -287,16 +288,6 @@ if [ -x /usr/bin/dircolors ]; then
     zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 fi
 
-# some more ls aliases
-alias ll='ls -l'
-alias la='ls -A'
-alias l='ls -CF'
-alias labc='ls -lap'              # alphabetical sort
-alias lla='ls -Al'                # List and Hidden Files
-alias las='ls -A'                 # Hidden Files
-alias lls='ls -l'                 # List
-alias lc='ls -ltcrh'              # sort by change time
-alias lu='ls -lturh'              # sort by access time
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
@@ -417,7 +408,7 @@ alias rmd='/bin/rm  --recursive --force --verbose '
 
 # Alias's for multiple directory listing commands
 alias la='ls -Alh'                # show hidden files
-alias ls='ls --color=always' # add colors and file type extensions
+alias ls='ls --color=auto' # add colors and file type extensions
 alias lx='ls -lXBh'               # sort by extension
 alias lk='ls -lSrh'               # sort by size
 alias lc='ls -lcrh'               # sort by change time
@@ -430,6 +421,7 @@ alias ll='ls -Fls'                # long listing format
 alias labc='ls -lap'              # alphabetical sort
 alias lf="ls -l | egrep -v '^d'"  # files only
 alias ldir="ls -l | egrep '^d'"   # directories only
+
 
 # alias chmod commands
 alias mx='chmod a+x'
