@@ -375,7 +375,7 @@ function ifconfig-eth() {
     ifconfig eth0 | sed -E 's/([0-9]{1,3}\.){3}[0-9]{1,3}/\x1b[35m&\x1b[0m/g; s/([a-f0-9]{1,4}:){7}[a-f0-9]{1,4}/\x1b[36m&\x1b[0m/g; s/inet6\x20([a-f0-9:]+)\x20/ \x1b[34m&\x1b[0m /g; s/inet\x20/ \x1b[33m&\x1b[0m /g; s/Multicast/\x1b[31m&\x1b[0m/g; s/(ether|flags)=/\x1b[32m\1\x1b[0m=/g; s/(mtu|txqueuelen)\s+[0-9]+/\x1b[35m\1\x1b[0m \x1b[33m&\x1b[0m/g; s/RX\ bytes/RX\x1b[36m bytes\x1b[0m/; s/TX\ bytes/TX\x1b[36m bytes\x1b[0m/; s/(RX|TX)\s+packets/\x1b[35m\1 packets\x1b[0m/; s/bytes\s+([0-9]+)/bytes \x1b[36m\1\x1b[0m/; s/(RX|TX)\s+errors/\x1b[31m\1 errors\x1b[0m/; s/(dropped|overruns|frame|carrier|collisions)\s+[0-9]+/\x1b[31m\1\x1b[0m/;'
 }
 
-alias ifconfig='ifconfig-highlight'
+alias ipcofig='ifconfig-highlight'
 alias ii='ifconfig-eth'
 
 # Add an "alert" alias for long running commands.  Use like so:
