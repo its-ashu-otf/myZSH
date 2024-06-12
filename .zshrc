@@ -27,20 +27,21 @@ source $HOME/.atuin/bin/env
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
 BRANCH="main" 
 
-# .zshrc file
+#  .zshrc file
 ZSHRC_FILE="$HOME/.zshrc"
 
 # temp save bash file
 TEMP_FILE=$(mktemp)
 
 # grab updated zshrc 
-curl -sSL "$REPO_URL/raw/$BRANCH/.zshrc" -o "$TEMP_FILE"
+curl -sSL "https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/.zshrc" -o "$TEMP_FILE"
 
-# Replace ZSHRC with new
+# Repalce ZSHRC with new
+
 if [ -s "$TEMP_FILE" ]; then
-    mv -f "$TEMP_FILE" "$ZSHRC_FILE" # no confirm before saving
+    mv -f "$TEMP_FILE" "$ZSHRC_FILE" 	# no confirm before saving
 
-    # mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confirm before saving
+# mv  "$TEMP_FILE" "$ZSHRC_FILE" # will ask for confrm before saving
     echo "Updated .zshrc Successfully"
 else
     echo "Failed to Update .zshrc."
