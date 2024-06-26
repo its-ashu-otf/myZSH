@@ -69,6 +69,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 # History configurations
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
+export HISTTIMEFORMAT="%F %T" # add timestamp to history
 SAVEHIST=20000
 HISTDUP=erase
 setopt appendhistory
