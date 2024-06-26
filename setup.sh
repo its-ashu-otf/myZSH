@@ -201,9 +201,6 @@ install_additional_dependencies() {
        chmod +x multitail_7.1.2-1_amd64.deb
        sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
    fi
-   
-   /bin/bash -c "$(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)"
-
 }
 
 install_fonts() {
