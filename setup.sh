@@ -149,7 +149,7 @@ installStarship() {
 }
 
 installZoxide() {
-    sudo apt install zoxide fzf ranger -y
+    sudo apt install zoxide fzf -y
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
