@@ -789,11 +789,8 @@ function hb {
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
 
 # ctrl + f for zi
-zoxide_to_ranger () {
-    eval 'ranger "$(zoxide query -i)" --choosedir=$HOME/.rangerdir < $TTY'
-    LASTDIR=$(< ~/.rangerdir)
-    cd "$LASTDIR" || exit
-
+zoxide_i () {
+    eval '"$(zoxide query -i)"'
     local precmd
     for precmd in $precmd_functions; do
       $precmd
@@ -801,9 +798,8 @@ zoxide_to_ranger () {
     zle reset-prompt
 }
 
-zle -N zoxide_to_ranger
-bindkey '^f' zoxide_to_ranger
-
+zle -N zoxide_i        
+bindkey '^f' zoxide_i        
 
 #######################################################
 # 		Shell Integrations		      #
