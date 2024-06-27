@@ -192,6 +192,11 @@ install_additional_dependencies() {
 		sudo apt install /tmp/fastfetch_latest_amd64.deb -y
    fi
 
+	fastfetch --gen-config
+ 	cd ~/.config/fastfetch
+  	rm config.jsonc
+   	wget https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/config.jsonc
+
    if ! command_exists bat; then
 		sudo apt install bat -y
    fi
@@ -205,16 +210,16 @@ install_additional_dependencies() {
 
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
-    FONT_NAME="CaskaydiaCoveNerdFont-Regular.ttf"
+    FONT_NAME="FiraCodeNerdFont-Regular.ttf"
     if [ ! -f "$FONT_DIR/$FONT_NAME" ]; then
         echo "Downloading font..."
-        wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/CascadiaCode.zip
+        wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip
         echo "Unzipping font..."
-        unzip -o CascadiaCode.zip -d extracted_fonts
+        unzip -o FiraCode.zip -d extracted_fonts
         echo "Installing font..."
         sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
         echo "Fonts Installed"
-        rm -r extracted_fonts CascadiaCode.zip
+        rm -r extracted_fonts FiraCode.zip
     else
         echo "Font already installed."
     fi
