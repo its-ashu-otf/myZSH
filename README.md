@@ -5,8 +5,6 @@ The .zshrc file is a script that runs every time a new terminal session is start
 
 ## Installation
 
-Note: Don't run this with sudo privileges.
-
 ```bash
 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/setup.sh)"
 ```
