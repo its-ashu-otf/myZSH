@@ -66,7 +66,7 @@ checkEnv() {
     fi
 
     ## Check Package Handeler
-    PACKAGEMANAGER='apt yum dnf pacman zypper'
+    PACKAGEMANAGER='apt yum dnf pacman zypper emerge xbps-install nix-env'
     for pgm in ${PACKAGEMANAGER}; do
         if command_exists ${pgm}; then
             PACKAGER=${pgm}
@@ -79,6 +79,16 @@ checkEnv() {
         exit 1
     fi
 
+    if command_exists sudo; then
+        SUDO_CMD="sudo"
+    elif command_exists doas && [ -f "/etc/doas.conf" ]; then
+        SUDO_CMD="doas"
+    else
+        SUDO_CMD="su -c"
+    fi
+
+    echo "Using ${SUDO_CMD} as privilege escalation software"
+    
     ## Check if the current directory is writable.
     GITPATH="$(dirname "$(realpath "$0")")"
     if [[ ! -w ${GITPATH} ]]; then
@@ -105,7 +115,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar tree'
+    DEPENDENCIES='zsh tar bat tree'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
