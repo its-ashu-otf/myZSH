@@ -115,7 +115,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar bat tree trash-cli fastfetch meld'
+    DEPENDENCIES='zsh tar bat tree trash-cli fastfetch meld trash-cli'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -203,6 +203,7 @@ install_additional_dependencies() {
    fi
 
 	fastfetch --gen-config
+ 	mkdir .config
  	cd ~/.config/fastfetch
   	rm config.jsonc
    	wget https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/config.jsonc
