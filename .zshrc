@@ -480,6 +480,11 @@ alias kssh="kitty +kitten ssh"
 #######################################################
 # SPECIAL FUNCTIONS
 #######################################################
+
+# LinUtil By ChristitusTech 
+linutil() {
+curl -fsSL https://christitus.com/linux | sh
+}
 # Extracts any archive(s) (if unp isn't installed)
 extract() {
 	for archive in "$@"; do
