@@ -115,7 +115,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar bat tree trash-cli fastfetch meld trash-cli'
+    DEPENDENCIES='zsh tar bat tree trash-cli fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -249,6 +249,8 @@ linkConfig() {
         fi
     fi
 
+    # Change Default Shell to ZSH
+    sudo chsh -s /usr/bin/zsh
     echo -e "${YELLOW}Linking new zsh config file...${RC}"
     ## Make symbolic link.
     ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
