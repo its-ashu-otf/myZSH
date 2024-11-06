@@ -115,7 +115,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar bat tree trash-cli fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting'
+    DEPENDENCIES='zsh tar bat tree trash-cli meld trash-cli zsh-autosuggestions zsh-syntax-highlighting'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -194,20 +194,6 @@ install_additional_dependencies() {
        sudo pip install git+https://github.com/andreafrancia/trash-cli
    fi
 
-   sudo apt update
-
-   if ! command_exists fastfetch; then
-	    FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
-       	curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
-		sudo apt install /tmp/fastfetch_latest_amd64.deb -y
-   fi
-
-	fastfetch --gen-config
- 	mkdir .config
- 	cd ~/.config/fastfetch
-  	rm config.jsonc
-   	wget https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/config.jsonc
-
    if ! command_exists bat; then
 		sudo apt install bat -y
    fi
@@ -218,6 +204,37 @@ install_additional_dependencies() {
        sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
    fi
 }
+
+installFastfetch() {
+    if ! command_exists fastfetch; then
+        printf "%b\n" "${YELLOW}Installing Fastfetch...${RC}"
+        case "$PACKAGER" in
+            pacman)
+                "$ESCALATION_TOOL" "$PACKAGER" -S --needed --noconfirm fastfetch
+                ;;
+            apt-get|nala)
+                curl -sSLo /tmp/fastfetch.deb https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.deb
+                "$ESCALATION_TOOL" "$PACKAGER" install -y /tmp/fastfetch.deb
+                rm /tmp/fastfetch.deb
+                ;;
+            *)
+                "$ESCALATION_TOOL" "$PACKAGER" install -y fastfetch
+                ;;
+        esac
+    else
+        printf "%b\n" "${GREEN}Fastfetch is already installed.${RC}"
+    fi
+}
+
+setupFastfetchConfig() {
+    printf "%b\n" "${YELLOW}Copying Fastfetch config files...${RC}"
+    if [ -d "${HOME}/.config/fastfetch" ] && [ ! -d "${HOME}/.config/fastfetch-bak" ]; then
+        cp -r "${HOME}/.config/fastfetch" "${HOME}/.config/fastfetch-bak"
+    fi
+    mkdir -p "${HOME}/.config/fastfetch/"
+    curl -sSLo "${HOME}/.config/fastfetch/config.jsonc" https://raw.githubusercontent.com/ChrisTitusTech/mybash/main/config.jsonc
+}
+
 
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
@@ -293,6 +310,8 @@ checkEnv
 installDepend
 installStarship
 installZoxide
+installFastfetch
+setupFastfetchConfig
 linkConfig
 install_additional_dependencies
 install_fonts
