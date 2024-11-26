@@ -485,6 +485,21 @@ alias kssh="kitty +kitten ssh"
 linutil() {
 curl -fsSL https://christitus.com/linux | sh
 }
+
+linutildev() {
+curl -fsSL https://christitus.com/linuxdev | sh
+}
+
+# AI Chat Integration Directly Through CLI
+askllama() {
+ollama run llama3.2-vision
+}
+
+askcodellama() {
+ollama run codellama
+}
+
+
 # Extracts any archive(s) (if unp isn't installed)
 extract() {
 	for archive in "$@"; do
