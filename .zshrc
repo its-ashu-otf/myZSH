@@ -493,7 +493,7 @@ curl -fsSL https://christitus.com/linuxdev | sh
 
 # AI Chat Integration Directly Through CLI
 askllama() {
-ollama run llama3.2-vision
+ollama run llama3.1
 }
 
 askcodellama() {
