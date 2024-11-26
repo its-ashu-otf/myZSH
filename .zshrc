@@ -17,6 +17,7 @@ if [ -x "$(command -v fastfetch)" ]; then
     fastfetch
 fi
 
+source ~/.fzf.zsh
 #######################################################
 # 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
 #######################################################
