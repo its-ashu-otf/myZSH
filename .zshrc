@@ -825,6 +825,17 @@ zoxide_i () {
 zle -N zoxide_i        
 bindkey '^f' zoxide_i        
 
+# ctrl + e for fzf search 
+fzf_i () {
+    eval '"$( find . -type f | fzf)"'
+    local precmd
+    for precmd in $precmd_functions; do
+      $precmd
+    done
+    zle reset-prompt
+}
+zle -N fzf_i
+bindkey '^e' fzf_i
 #######################################################
 # 		Shell Integrations		      #
 #######################################################
