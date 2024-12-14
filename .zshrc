@@ -825,6 +825,21 @@ zoxide_i () {
 zle -N zoxide_i        
 bindkey '^f' zoxide_i        
 
+# ctrl + r for fuzzy history search 
+export FZF_DEFAULT_COMMAND='fc -l 1'
+bindkey '^R' fzf-history-widget
+
+fzf-history-widget() {
+  local selected
+  selected=$(fc -l 1 | fzf)
+  if [[ -n $selected ]]; then
+    BUFFER=$selected
+    CURSOR=${#BUFFER}
+  fi
+  zle accept-line
+}
+zle -N fzf-history-widget
+
 # ctrl + e for fzf search 
 fzf_i () {
     eval '"$( find . -type f | fzf)"'
