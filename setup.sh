@@ -251,6 +251,7 @@ install_fonts() {
 linkConfig() {
     ## Get the correct user home directory.
     USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
+    
     ## Check if a zshrc file is already there.
     OLD_ZSHRC="${USER_HOME}/.zshrc"
     if [[ -e ${OLD_ZSHRC} ]]; then
@@ -264,11 +265,25 @@ linkConfig() {
     # Change Default Shell to ZSH
     echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
     sudo chsh -s /usr/bin/zsh
+
+    # Determine which starship configuration to link based on OS
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        # Check if the OS is Kali or Debian-based
+        if [[ "$ID" == "kali" || "$ID_LIKE" == *"debian"* ]]; then
+            echo -e "${YELLOW}Kali or Debian-based system detected, linking starship_kali.toml...${RC}"
+            ln -svf ${GITPATH}/starship_kali.toml ${USER_HOME}/.config/starship.toml
+        else
+            echo -e "${YELLOW}Non-Kali system detected, linking default starship.toml...${RC}"
+            ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
+        fi
+    fi
+    
     echo -e "${YELLOW}Linking new zsh config file...${RC}"
-    ## Make symbolic link.
+    ## Make symbolic link for .zshrc.
     ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
-    ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
 }
+
 
 install_TMUX() {
     read -p "Would you like to install or update the TMUX configuration? [y/N] " install_tmux
