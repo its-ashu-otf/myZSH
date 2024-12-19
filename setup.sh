@@ -7,27 +7,26 @@ GREEN='\e[32m'
 
 echo -e "${GREEN}"
 cat << "EOF"
+                       8888888888P  .d8888b.  888    888 
+                             d88P  d88P  Y88b 888    888 
+                            d88P   Y88b.      888    888 
+88888b.d88b.  888  888     d88P     "Y888b.   8888888888 
+888 "888 "88b 888  888    d88P         "Y88b. 888    888 
+888  888  888 888  888   d88P            "888 888    888 
+888  888  888 Y88b 888  d88P       Y88b  d88P 888    888 
+888  888  888  "Y88888 d8888888888  "Y8888P"  888    888 
+                   888                                   
+              Y8b d88P                                   
+               "Y88P"                                   
 
-                            ███████████  █████████  █████   █████
-                           ░█░░░░░░███  ███░░░░░███░░███   ░░███ 
- █████████████   █████ ████░     ███░  ░███    ░░░  ░███    ░███ 
-░░███░░███░░███ ░░███ ░███      ███    ░░█████████  ░███████████ 
- ░███ ░███ ░███  ░███ ░███     ███      ░░░░░░░░███ ░███░░░░░███ 
- ░███ ░███ ░███  ░███ ░███   ████     █ ███    ░███ ░███    ░███ 
- █████░███ █████ ░░███████  ███████████░░█████████  █████   █████
-░░░░░ ░░░ ░░░░░   ░░░░░███ ░░░░░░░░░░░  ░░░░░░░░░  ░░░░░   ░░░░░ 
-                  ███ ░███                                       
-                 ░░██████                                        
-                  ░░░░░░                                         
-
- __           ___  __            __                 __  ___  ___ 
-|__) \ /    |  |  /__`      /\  /__` |__| |  |     /  \  |  |__  
-|__)  |     |  |  .__/ ___ /~~\ .__/ |  | \__/ ___ \__/  |  |    
-                                                                        
+    __             _ __                        __                      __  ____
+   / /_  __  __   (_) /______      ____ ______/ /_  __  __      ____  / /_/ __/
+  / __ \/ / / /  / / __/ ___/_____/ __ `/ ___/ __ \/ / / /_____/ __ \/ __/ /_  
+ / /_/ / /_/ /  / / /_(__  )_____/ /_/ (__  ) / / / /_/ /_____/ /_/ / /_/ __/  
+/_.___/\__, /  /_/\__/____/      \__,_/____/_/ /_/\__,_/      \____/\__/_/     
+      /____/                                                                   
                                                                                                                                                 
 EOF
-
-
 
 command_exists() {
     command -v $1 >/dev/null 2>&1
@@ -65,7 +64,7 @@ checkEnv() {
         exit 1
     fi
 
-    ## Check Package Handeler
+    ## Check Package Manager
     PACKAGEMANAGER='apt yum dnf pacman zypper emerge xbps-install nix-env'
     for pgm in ${PACKAGEMANAGER}; do
         if command_exists ${pgm}; then
@@ -110,12 +109,11 @@ checkEnv() {
         echo -e "${RED}You need to be a member of the sudo group to run me!"
         exit 1
     fi
-
 }
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar bat tree trash-cli meld trash-cli zsh-autosuggestions zsh-syntax-highlighting'
+    DEPENDENCIES='zsh tar bat tree trash-cli fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
@@ -124,7 +122,7 @@ installDepend() {
             cd /opt && sudo git clone https://aur.archlinux.org/yay-git.git && sudo chown -R ${USER}:${USER} ./yay-git
             cd yay-git && makepkg --noconfirm -si
         else
-            echo "Aur helper already installed"
+            echo "AUR helper already installed"
         fi
         if command_exists yay; then
             AUR_HELPER="yay"
@@ -140,6 +138,20 @@ installDepend() {
     fi
 }
 
+installFastfetch() {
+    ## Install fastfetch
+    echo -e "${YELLOW}Installing Fastfetch...${RC}"
+    if ! command_exists fastfetch; then
+        git clone https://github.com/ChrisTitusTech/fastfetch.git "$HOME/.fastfetch" || {
+            echo -e "${RED}Failed to clone Fastfetch repository!${RC}"
+            exit 1
+        }
+        cd "$HOME/.fastfetch" && make && sudo make install
+    else
+        echo "Fastfetch is already installed."
+    fi
+}
+
 installStarship() {
     if command_exists starship; then
         echo "Starship already installed"
@@ -150,16 +162,9 @@ installStarship() {
         echo -e "${RED}Something went wrong during starship install!${RC}"
         exit 1
     fi
-    if command_exists fzf; then
-        echo "Fzf already installed"
-    else
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-        ~/.fzf/install
-    fi
 }
 
 installZoxide() {
-    sudo apt install zoxide fzf -y
     if command_exists zoxide; then
         echo "Zoxide already installed"
         return
@@ -172,59 +177,49 @@ installZoxide() {
 }
 
 install_additional_dependencies() {
-   if ! command_exists joe; then
-       sudo apt install -y joe
-   fi
-   if ! command_exists meld; then
-       sudo apt install -y meld
-   fi
-   if ! command_exists xsel; then
-       sudo apt install -y xsel
-   fi
-   if ! command_exists xclip; then
-       sudo apt install -y xclip
-   fi
-   if ! command_exists tar; then
-       sudo apt install -y tar
-   fi
-   if ! command_exists tree; then
-       sudo apt install -y tree
-   fi
-   if ! command_exists trash-put; then
-       sudo pip install git+https://github.com/andreafrancia/trash-cli
-   fi
+    if ! command_exists joe; then
+        sudo apt install -y joe
+    fi
+    if ! command_exists meld; then
+        sudo apt install -y meld
+    fi
+    if ! command_exists xsel; then
+        sudo apt install -y xsel
+    fi
+    if ! command_exists xclip; then
+        sudo apt install -y xclip
+    fi
+    if ! command_exists tar; then
+        sudo apt install -y tar
+    fi
+    if ! command_exists tree; then
+        sudo apt install -y tree
+    fi
+    if ! command_exists trash-put; then
+        sudo pip install git+https://github.com/andreafrancia/trash-cli
+    fi
 
-   if ! command_exists bat; then
-		sudo apt install bat -y
-   fi
+    if ! command_exists bat; then
+        sudo apt install bat -y
+    fi
 
-   if ! command_exists multitail; then
-       wget -q --show-progress http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
-       chmod +x multitail_7.1.2-1_amd64.deb
-       sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
-   fi
-}
-
-installFastfetch() {
-    if ! command_exists fastfetch; then
-        printf "%b\n" "${YELLOW}Installing Fastfetch...${RC}"
-        case "$PACKAGER" in
-            pacman)
-                "$ESCALATION_TOOL" "$PACKAGER" -S --needed --noconfirm fastfetch
-                ;;
-            apt-get|nala)
-                curl -sSLo /tmp/fastfetch.deb https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.deb
-                "$ESCALATION_TOOL" "$PACKAGER" install -y /tmp/fastfetch.deb
-                rm /tmp/fastfetch.deb
-                ;;
-            *)
-                "$ESCALATION_TOOL" "$PACKAGER" install -y fastfetch
-                ;;
-        esac
-    else
-        printf "%b\n" "${GREEN}Fastfetch is already installed.${RC}"
+    if ! command_exists multitail; then
+        # Check if the OS is Debian-based (including Kali, Parrot, etc.)
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            # Check if the system is Debian or Debian-like (Kali, Parrot, etc.)
+            if [[ "$ID" == "debian" || "$ID_LIKE" == *"debian"* ]]; then
+                echo "Installing multitail for Debian-based OS (including Kali, Parrot, etc.)..."
+                wget -q --show-progress http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
+                chmod +x multitail_7.1.2-1_amd64.deb
+                sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
+            else
+                echo "Skipping multitail installation. Not a Debian-based OS."
+            fi
+        fi
     fi
 }
+
 
 setupFastfetchConfig() {
     printf "%b\n" "${YELLOW}Copying Fastfetch config files...${RC}"
@@ -258,7 +253,7 @@ linkConfig() {
     USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
     ## Check if a zshrc file is already there.
     OLD_ZSHRC="${USER_HOME}/.zshrc"
-    if [[ -e ${OLD_ZZSHRC} ]]; then
+    if [[ -e ${OLD_ZSHRC} ]]; then
         echo -e "${YELLOW}Moving old zsh config file to ${USER_HOME}/.zshrc.bak${RC}"
         if ! mv ${OLD_ZSHRC} ${USER_HOME}/.zshrc.bak; then
             echo -e "${RED}Can't move the old zsh config file!${RC}"
@@ -267,6 +262,7 @@ linkConfig() {
     fi
 
     # Change Default Shell to ZSH
+    echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
     sudo chsh -s /usr/bin/zsh
     echo -e "${YELLOW}Linking new zsh config file...${RC}"
     ## Make symbolic link.
