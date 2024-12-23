@@ -422,7 +422,7 @@ alias ll='ls -Fls'                # long listing format
 alias labc='ls -lap'              # alphabetical sort
 alias lf="ls -l | egrep -v '^d'"  # files only
 alias ldir="ls -l | egrep '^d'"   # directories only
-
+alias fs='fzf --preview="bat --color=always {}"'
 
 # alias chmod commands
 alias mx='chmod a+x'
@@ -861,3 +861,5 @@ bindkey '^e' fzf_i
 #######################################################
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+source <(fzf --zsh)
+
