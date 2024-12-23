@@ -17,6 +17,30 @@ if [ -x "$(command -v fastfetch)" ]; then
     fastfetch
 fi
 
+zsh_update() {
+    ## Fetching Repo
+    REPO_DIR="$HOME/.zsh/myZSH"
+    if [ -d "$REPO_DIR" ]; then
+        echo "Repository already exists. Checking for updates..."
+        cd "$REPO_DIR"
+        git fetch origin
+        LOCAL=$(git rev-parse @)
+        REMOTE=$(git rev-parse @{u})
+        if [ $LOCAL = $REMOTE ]; then
+            echo "Repository is up to date."
+        else
+            echo "Updating repository..."
+            git pull
+        fi
+    else
+        echo "Repository does not exist. Cloning..."
+        mkdir -p "$HOME/.zsh"
+        cd "$HOME/.zsh"
+        git clone https://github.com/its-ashu-otf/myZSH.git
+        cd myZSH
+    fi
+}
+
 #######################################################
 # 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
 #######################################################
