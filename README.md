@@ -20,6 +20,9 @@ curl -fsSL https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/setup.sh | 
 - **Safety Features**: Aliases for safer file operations, like using trash instead of `rm` for deleting files, to prevent accidental data loss.
 - **Extensive Zoxide support**: Easily navigate with `z`, `zi`, or pressing Ctrl+f to launch zi to see frequently used navigation directories.
 - **Terminal C/P**: PB Copy and paste using xsel for terminal copy and pasting.
+- **Terminal Icons:** Added Terminal Icons
+- **New Gen `ls`:** New Generation of ls added
+- **Colourful O/P:** Colorized Nmap Output
 - **TMUX**: Integrated my personal tmux config.
 
 #### Aliases and Functions
