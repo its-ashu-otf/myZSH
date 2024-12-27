@@ -270,6 +270,7 @@ if [ -x /usr/bin/dircolors ]; then
 	
     alias ls='eza --color=always --group-directories-first --icons'
     alias la='eza -la --color=always --group-directories-first --icons'
+
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
@@ -279,7 +280,62 @@ if [ -x /usr/bin/dircolors ]; then
     alias ip='ip --color=auto'
     alias spico='sudo pico'
     alias snano='sudo nano'
-    alias nmap='grc nmap'
+    alias g++=/usr/bin/grc --colour=auto g++
+    alias head=/usr/bin/grc --colour=auto head
+    alias make=/usr/bin/grc --colour=auto make
+    alias ld=/usr/bin/grc --colour=auto ld
+    alias ping6=/usr/bin/grc --colour=auto ping6
+    alias tail=/usr/bin/grc --colour=auto tail
+    alias traceroute6=/usr/bin/grc --colour=auto traceroute6
+    alias ant=/usr/bin/grc --colour=auto ant
+    alias blkid=/usr/bin/grc --colour=auto blkid
+    alias curl=/usr/bin/grc --colour=auto curl
+    alias df=/usr/bin/grc --colour=auto df
+    alias diff=/usr/bin/grc --colour=auto diff
+    alias dig=/usr/bin/grc --colour=auto dig
+    alias du=/usr/bin/grc --colour=auto du
+    alias env=/usr/bin/grc --colour=auto env
+    alias fdisk=/usr/bin/grc --colour=auto fdisk
+    alias findmnt=/usr/bin/grc --colour=auto findmnt
+    alias free=/usr/bin/grc --colour=auto free
+    alias gcc=/usr/bin/grc --colour=auto gcc
+    alias getfacl=/usr/bin/grc --colour=auto getfacl
+    alias getsebool=/usr/bin/grc --colour=auto getsebool
+    alias id=/usr/bin/grc --colour=auto id
+    alias ifconfig=/usr/bin/grc --colour=auto ifconfig
+    alias ip=/usr/bin/grc --colour=auto ip
+    alias iptables=/usr/bin/grc --colour=auto iptables
+    alias iwconfig=/usr/bin/grc --colour=auto iwconfig
+    alias jobs=/usr/bin/grc --colour=auto jobs
+    alias last=/usr/bin/grc --colour=auto last
+    alias log=/usr/bin/grc --colour=auto log
+    alias ls=/usr/bin/grc --colour=auto ls
+    alias lsattr=/usr/bin/grc --colour=auto lsattr
+    alias lsblk=/usr/bin/grc --colour=auto lsblk
+    alias lsmod=/usr/bin/grc --colour=auto lsmod
+    alias lsof=/usr/bin/grc --colour=auto lsof
+    alias lspci=/usr/bin/grc --colour=auto lspci
+    alias mount=/usr/bin/grc --colour=auto mount
+    alias netstat=/usr/bin/grc --colour=auto netstat
+    alias nmap=/usr/bin/grc --colour=auto nmap
+    alias php=/usr/bin/grc --colour=auto php
+    alias ping=/usr/bin/grc --colour=auto ping
+    alias ps=/usr/bin/grc --colour=auto ps
+    alias pv=/usr/bin/grc --colour=auto pv
+    alias sensors=/usr/bin/grc --colour=auto sensors
+    alias showmount=/usr/bin/grc --colour=auto showmount
+    alias ss=/usr/bin/grc --colour=auto ss
+    alias stat=/usr/bin/grc --colour=auto stat
+    alias sysctl=/usr/bin/grc --colour=auto sysctl
+    alias systemctl=/usr/bin/grc --colour=auto systemctl
+    alias tcpdump=/usr/bin/grc --colour=auto tcpdump
+    alias traceroute=/usr/bin/grc --colour=auto traceroute
+    alias tune2fs=/usr/bin/grc --colour=auto tune2fs
+    alias ulimit=/usr/bin/grc --colour=auto ulimit
+    alias uptime=/usr/bin/grc --colour=auto uptime
+    alias vmstat=/usr/bin/grc --colour=auto vmstat
+    alias whois=/usr/bin/grc --colour=auto whois
+
 
 
     export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
