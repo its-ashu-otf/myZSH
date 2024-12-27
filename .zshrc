@@ -31,6 +31,8 @@ zsh_update() {
         else
             echo "Updating repository..."
             git pull
+	    zsh
+	    echo "Done"
         fi
     else
         echo "Repository does not exist. Cloning..."
