@@ -309,7 +309,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias jobs=/usr/bin/grc --colour=auto jobs
     alias last=/usr/bin/grc --colour=auto last
     alias log=/usr/bin/grc --colour=auto log
-    alias ls=/usr/bin/grc --colour=auto ls
     alias lsattr=/usr/bin/grc --colour=auto lsattr
     alias lsblk=/usr/bin/grc --colour=auto lsblk
     alias lsmod=/usr/bin/grc --colour=auto lsmod
