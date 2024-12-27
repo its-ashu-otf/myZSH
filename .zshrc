@@ -278,6 +278,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias ip='ip --color=auto'
     alias spico='sudo pico'
     alias snano='sudo nano'
+    alias nmap='grc nmap'
 
 
     export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
