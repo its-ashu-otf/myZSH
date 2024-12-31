@@ -144,7 +144,7 @@ installDepend() {
     else
         sudo ${PACKAGER} install -yq ${DEPENDENCIES}
     fi
-    if command_exists tgpt; then
+        if command_exists tgpt; then
             curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin
 }
 
