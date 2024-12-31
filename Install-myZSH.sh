@@ -5,28 +5,36 @@ RED='\e[31m'
 YELLOW='\e[33m'
 GREEN='\e[32m'
 
-echo -e "${GREEN}"
-cat << "EOF"
-                       8888888888P  .d8888b.  888    888 
-                             d88P  d88P  Y88b 888    888 
-                            d88P   Y88b.      888    888 
-88888b.d88b.  888  888     d88P     "Y888b.   8888888888 
-888 "888 "88b 888  888    d88P         "Y88b. 888    888 
-888  888  888 888  888   d88P            "888 888    888 
-888  888  888 Y88b 888  d88P       Y88b  d88P 888    888 
-888  888  888  "Y88888 d8888888888  "Y8888P"  888    888 
-                   888                                   
-              Y8b d88P                                   
-               "Y88P"                                   
+# Function to center text
+center_text() {
+    local text="$1"
+    local line_length="$2"
+    local text_length=${#text}
+    local padding_before=$(( (line_length - text_length) / 2 ))
+    local padding_after=$(( line_length - text_length - padding_before ))
+    
+    printf "%s%-${padding_before}s%s%-*s%s\n" "║" " " "$text" "$padding_after" " " "║"
+}
 
-    __             _ __                        __                      __  ____
-   / /_  __  __   (_) /______      ____ ______/ /_  __  __      ____  / /_/ __/
-  / __ \/ / / /  / / __/ ___/_____/ __ `/ ___/ __ \/ / / /_____/ __ \/ __/ /_  
- / /_/ / /_/ /  / / /_(__  )_____/ /_/ (__  ) / / / /_/ /_____/ /_/ / /_/ __/  
-/_.___/\__, /  /_/\__/____/      \__,_/____/_/ /_/\__,_/      \____/\__/_/     
-      /____/                                                                   
-                                                                                                                                                
-EOF
+# ASCII Art
+echo -e "\033[96m\033[1m  
+        ███╗   ███╗██╗   ██╗███████╗███████╗██╗  ██╗
+        ████╗ ████║╚██╗ ██╔╝╚══███╔╝██╔════╝██║  ██║
+        ██╔████╔██║ ╚████╔╝   ███╔╝ ███████╗███████║
+        ██║╚██╔╝██║  ╚██╔╝   ███╔╝  ╚════██║██╔══██║
+        ██║ ╚═╝ ██║   ██║   ███████╗███████║██║  ██║
+        ╚═╝     ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝                                                  
+\033[0m"
+echo
+echo -e "\033[92m╓────────────────────────────────────────────────────────────╖"
+center_text "Welcome to the myZSH setup!" "$line_length"
+center_text "Script Name: Install-myZSH.sh " "$line_length"
+center_text "Author: its-ashu-otf " "$line_length"
+center_text "Installer Version: 5.0.0 " "$line_length"
+echo -e "╙────────────────────────────────────────────────────────────╜\033[0m"
+echo
+
+
 
 command_exists() {
     command -v $1 >/dev/null 2>&1
@@ -136,6 +144,8 @@ installDepend() {
     else
         sudo ${PACKAGER} install -yq ${DEPENDENCIES}
     fi
+    if command_exists tgpt; then
+            curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin
 }
 
 installFastfetch() {
