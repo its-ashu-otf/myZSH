@@ -20,7 +20,7 @@ zsh_update
 # Features
 
 #### Enhancements and Utilities
-
+- **AI Integration**: Advanced AI Integration in Shell
 - **Configuration Editors**: Functions to edit important configuration files directly, e.g., `apacheconfig()` for Apache server configurations
 - **Color and Formatting**: Enhancements for command output readability using colors and formatting for tools like `ls`, `grep`, and `man`.
 - **Navigation Shortcuts**: Aliases to simplify directory navigation, e.g., `alias ..='cd ..'` to go up one directory.
