@@ -43,6 +43,7 @@ zsh_update() {
     fi
 }
 
+export AI_PROVIDER=duckduckgo
 #######################################################
 # 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
 #######################################################
