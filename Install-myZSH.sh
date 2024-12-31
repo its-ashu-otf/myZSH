@@ -144,10 +144,6 @@ installDepend() {
     else
         sudo ${PACKAGER} install -yq ${DEPENDENCIES}
     fi
-        if command_exists tgpt; then
-            wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
-            sudo bash install.sh
-            echo "tgpt installed succesfully"
 }
 
 installFastfetch() {
@@ -163,6 +159,22 @@ installFastfetch() {
         echo "Fastfetch is already installed."
     fi
 }
+
+installtgpt() {
+    # Check if tgpt is not installed
+    if ! command -v tgpt &> /dev/null; then
+        # Download the install script silently
+        wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
+        # Run the install script
+        sudo bash install.sh
+        # Output success message
+        echo "tgpt installed successfully"
+    else
+        # If tgpt is already installed, inform the user
+        echo "tgpt is already installed"
+    fi
+}
+
 
 installStarship() {
     if command_exists starship; then
@@ -334,6 +346,7 @@ installDepend
 installStarship
 installZoxide
 installFastfetch
+installtgpt
 setupFastfetchConfig
 linkConfig
 install_additional_dependencies
