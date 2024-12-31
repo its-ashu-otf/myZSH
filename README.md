@@ -6,7 +6,7 @@ The .zshrc file is a script that runs every time a new terminal session is start
 ## Installation 
 
 ```zsh
-curl -fsSL https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/Install-myZSH.sh | bash
 ```
 ![render1734625237861](https://github.com/user-attachments/assets/a661b896-7260-44a1-8c37-72f63c57409e)
 
