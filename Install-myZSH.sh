@@ -145,7 +145,9 @@ installDepend() {
         sudo ${PACKAGER} install -yq ${DEPENDENCIES}
     fi
         if command_exists tgpt; then
-            curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin
+            wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
+            sudo bash install.sh
+            echo "tgpt installed succesfully"
 }
 
 installFastfetch() {
