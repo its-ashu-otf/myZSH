@@ -146,20 +146,6 @@ installDepend() {
     fi
 }
 
-installFastfetch() {
-    ## Install fastfetch
-    echo -e "${YELLOW}Installing Fastfetch...${RC}"
-    if ! command_exists fastfetch; then
-        git clone https://github.com/ChrisTitusTech/fastfetch.git "$HOME/.fastfetch" || {
-            echo -e "${RED}Failed to clone Fastfetch repository!${RC}"
-            exit 1
-        }
-        cd "$HOME/.fastfetch" && make && sudo make install
-    else
-        echo "Fastfetch is already installed."
-    fi
-}
-
 installtgpt() {
     # Check if tgpt is not installed
     if ! command -v tgpt &> /dev/null; then
@@ -345,7 +331,6 @@ checkEnv
 installDepend
 installStarship
 installZoxide
-installFastfetch
 installtgpt
 setupFastfetchConfig
 linkConfig
