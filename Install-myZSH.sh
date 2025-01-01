@@ -247,13 +247,14 @@ install_fonts() {
         echo "Downloading fonts..."
         wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*FiraCode.zip' | cut -d '"' -f 4)
         wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*Hack.zip' | cut -d '"' -f 4)
-        wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*FiraCode.zip' | cut -d '"' -f 4)
         echo "Unzipping font..."
-        unzip -o *.zip -d extracted_fonts
+        unzip -o FiraCode.zip -d extracted_fonts
+        unzip -o Hack.zip -d extracted_fonts
         echo "Installing font..."
         sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
         echo "Fonts Installed"
         rm -r extracted_fonts FiraCode.zip
+        rm -r extracted_fonts Hack.zip
     else
         echo "Font already installed."
     fi
