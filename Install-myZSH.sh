@@ -7,25 +7,19 @@ GREEN='\e[32m'
 
 echo -e "${GREEN}"
 cat << "EOF"
-                       8888888888P  .d8888b.  888    888 
-                             d88P  d88P  Y88b 888    888 
-                            d88P   Y88b.      888    888 
-88888b.d88b.  888  888     d88P     "Y888b.   8888888888 
-888 "888 "88b 888  888    d88P         "Y88b. 888    888 
-888  888  888 888  888   d88P            "888 888    888 
-888  888  888 Y88b 888  d88P       Y88b  d88P 888    888 
-888  888  888  "Y88888 d8888888888  "Y8888P"  888    888 
-                   888                                   
-              Y8b d88P                                   
-               "Y88P"                                   
-
-    __             _ __                        __                      __  ____
-   / /_  __  __   (_) /______      ____ ______/ /_  __  __      ____  / /_/ __/
-  / __ \/ / / /  / / __/ ___/_____/ __ `/ ___/ __ \/ / / /_____/ __ \/ __/ /_  
- / /_/ / /_/ /  / / /_(__  )_____/ /_/ (__  ) / / / /_/ /_____/ /_/ / /_/ __/  
-/_.___/\__, /  /_/\__/____/      \__,_/____/_/ /_/\__,_/      \____/\__/_/     
-      /____/                                                                   
-                                                                                                                                                
+        ███╗   ███╗██╗   ██╗███████╗███████╗██╗  ██╗
+        ████╗ ████║╚██╗ ██╔╝╚══███╔╝██╔════╝██║  ██║
+        ██╔████╔██║ ╚████╔╝   ███╔╝ ███████╗███████║
+        ██║╚██╔╝██║  ╚██╔╝   ███╔╝  ╚════██║██╔══██║
+        ██║ ╚═╝ ██║   ██║   ███████╗███████║██║  ██║
+        ╚═╝     ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝                
+                      
+   __          _ __                  __                 __  ___
+  / /  __ __  (_) /___________ ____ / /  __ _________  / /_/ _/
+ / _ \/ // / / / __(_-<___/ _ `(_-</ _ \/ // /___/ _ \/ __/ _/ 
+/_.__/\_, / /_/\__/___/   \_,_/___/_//_/\_,_/    \___/\__/_/   
+     /___/                                                     
+                                                                                                                                                                                                             
 EOF
 
 command_exists() {
@@ -250,10 +244,12 @@ install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
     FONT_NAME="FiraCodeNerdFont-Regular.ttf"
     if [ ! -f "$FONT_DIR/$FONT_NAME" ]; then
-        echo "Downloading font..."
-        wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip
+        echo "Downloading fonts..."
+        wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*FiraCode.zip' | cut -d '"' -f 4)
+        wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*Hack.zip' | cut -d '"' -f 4)
+        wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*FiraCode.zip' | cut -d '"' -f 4)
         echo "Unzipping font..."
-        unzip -o FiraCode.zip -d extracted_fonts
+        unzip -o *.zip -d extracted_fonts
         echo "Installing font..."
         sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
         echo "Fonts Installed"
