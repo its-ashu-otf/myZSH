@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# Color Definitions
 RC='\e[0m'
 RED='\e[31m'
 YELLOW='\e[33m'
 GREEN='\e[32m'
+CYAN='\e[96m'
 
 # Function to center text
 center_text() {
@@ -12,33 +14,24 @@ center_text() {
     local text_length=${#text}
     local padding_before=$(( (line_length - text_length) / 2 ))
     local padding_after=$(( line_length - text_length - padding_before ))
-    
+
     printf "%s%-${padding_before}s%s%-*s%s\n" "║" " " "$text" "$padding_after" " " "║"
 }
 
-# ASCII Art
-echo -e "\033[96m\033[1m  
+# Displaying welcome ASCII art
+display_welcome() {
+    echo -e "${CYAN}\033[1m
         ███╗   ███╗██╗   ██╗███████╗███████╗██╗  ██╗
         ████╗ ████║╚██╗ ██╔╝╚══███╔╝██╔════╝██║  ██║
         ██╔████╔██║ ╚████╔╝   ███╔╝ ███████╗███████║
         ██║╚██╔╝██║  ╚██╔╝   ███╔╝  ╚════██║██╔══██║
         ██║ ╚═╝ ██║   ██║   ███████╗███████║██║  ██║
-        ╚═╝     ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝                                                  
-\033[0m"
-echo
-echo -e "\033[92m╓────────────────────────────────────────────────────────────╖"
-center_text "Welcome to the myZSH setup!" "$line_length"
-center_text "Script Name: Install-myZSH.sh " "$line_length"
-center_text "Author: its-ashu-otf " "$line_length"
-center_text "Installer Version: 5.0.0 " "$line_length"
-echo -e "╙────────────────────────────────────────────────────────────╜\033[0m"
-echo
-
-command_exists() {
-    command -v $1 >/dev/null 2>&1
+        ╚═╝     ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝
+    \033[0m"
 }
 
-fetch() {
+# Fetch repository or update
+fetch_repo() {
     REPO_DIR="$HOME/.zsh/myZSH"
     if [ -d "$REPO_DIR" ]; then
         echo "Repository already exists. Checking for updates..."
@@ -53,7 +46,7 @@ fetch() {
             git pull
         fi
     else
-        echo "Repository does not exist. Cloning..."
+        echo "Cloning repository..."
         mkdir -p "$HOME/.zsh"
         cd "$HOME/.zsh"
         git clone https://github.com/its-ashu-otf/myZSH.git
@@ -61,26 +54,37 @@ fetch() {
     fi
 }
 
-checkEnv() {
-    REQUIREMENTS='curl groups sudo'
-    if ! command_exists ${REQUIREMENTS}; then
-        echo -e "${RED}To run me, you need: ${REQUIREMENTS}${RC}"
-        exit 1
-    fi
+# Check if required commands exist
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
 
-    PACKAGEMANAGER='apt yum dnf pacman zypper emerge xbps-install nix-env'
-    for pgm in ${PACKAGEMANAGER}; do
-        if command_exists ${pgm}; then
-            PACKAGER=${pgm}
-            echo -e "Using ${pgm}"
+# Check system environment
+check_system_env() {
+    REQUIRED_COMMANDS="curl groups sudo"
+    for cmd in $REQUIRED_COMMANDS; do
+        if ! command_exists "$cmd"; then
+            echo -e "${RED}Missing required command: $cmd${RC}"
+            exit 1
         fi
     done
 
-    if [ -z "${PACKAGER}" ]; then
-        echo -e "${RED}Can't find a supported package manager"
+    # Check for supported package manager
+    PACKAGE_MANAGERS="apt yum dnf pacman zypper emerge xbps-install nix-env"
+    for pkg_mgr in $PACKAGE_MANAGERS; do
+        if command_exists "$pkg_mgr"; then
+            PACKAGE_MANAGER="$pkg_mgr"
+            echo -e "Using package manager: $pkg_mgr"
+            break
+        fi
+    done
+
+    if [ -z "$PACKAGE_MANAGER" ]; then
+        echo -e "${RED}Unsupported package manager. Please install a supported one.${RC}"
         exit 1
     fi
 
+    # Set up privilege escalation command
     if command_exists sudo; then
         SUDO_CMD="sudo"
     elif command_exists doas && [ -f "/etc/doas.conf" ]; then
@@ -89,142 +93,118 @@ checkEnv() {
         SUDO_CMD="su -c"
     fi
 
-    echo "Using ${SUDO_CMD} as privilege escalation software"
-    
-    GITPATH="$(dirname "$(realpath "$0")")"
-    if [[ ! -w ${GITPATH} ]]; then
-        echo -e "${RED}Can't write to ${GITPATH}${RC}"
-        exit 1
-    fi
-
-    SUPERUSERGROUP='wheel sudo root'
-    for sug in ${SUPERUSERGROUP}; do
-        if groups | grep ${sug}; then
-            SUGROUP=${sug}
-            echo -e "Super user group ${SUGROUP}"
-        fi
-    done
-
-    if ! groups | grep ${SUGROUP} >/dev/null; then
-        echo -e "${RED}You need to be a member of the sudo group to run me!"
-        exit 1
-    fi
+    echo "Using ${SUDO_CMD} for privilege escalation."
 }
 
-installDepend() {
-    DEPENDENCIES='zsh tar bat tree trash-cli fzf zoxide fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting grc colorize eza tgpt'
+# Install required dependencies
+install_dependencies() {
+    DEPENDENCIES="zsh tar bat tree trash-cli fzf zoxide fastfetch meld zsh-autosuggestions zsh-syntax-highlighting grc colorize eza tgpt"
     echo -e "${YELLOW}Installing dependencies...${RC}"
-    if [[ $PACKAGER == "pacman" ]]; then
+
+    if [[ "$PACKAGE_MANAGER" == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
-            echo "Installing yay as AUR helper..."
-            sudo ${PACKAGER} --noconfirm -S base-devel
+            echo "Installing AUR helper..."
+            sudo ${PACKAGE_MANAGER} --noconfirm -S base-devel
             cd /opt && sudo git clone https://aur.archlinux.org/yay-git.git && sudo chown -R ${USER}:${USER} ./yay-git
             cd yay-git && makepkg --noconfirm -si
-        else
-            echo "AUR helper already installed"
         fi
-        if command_exists yay; then
-            AUR_HELPER="yay"
-        elif command_exists paru; then
-            AUR_HELPER="paru"
-        else
-            echo "No AUR helper found. Please install yay or paru."
-            exit 1
-        fi
+        AUR_HELPER=$(command_exists yay && echo "yay" || echo "paru")
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
     else
-        sudo ${PACKAGER} install -yq ${DEPENDENCIES}
+        sudo ${PACKAGE_MANAGER} install -y ${DEPENDENCIES}
     fi
 }
 
+# Install specific software like tgpt, zoxide, starship
+install_software() {
+    # Install tgpt
+    if ! command_exists tgpt; then
+        echo "Installing tgpt..."
+        wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
+        sudo bash install.sh
+        echo "tgpt installed successfully."
+    else
+        echo "tgpt already installed."
+    fi
+
+    # Install zoxide
+    if ! command_exists zoxide; then
+        echo "Installing zoxide..."
+        curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    else
+        echo "zoxide already installed."
+    fi
+
+    # Install Starship
+    if ! command_exists starship; then
+        echo "Installing starship..."
+        curl -sS https://starship.rs/install.sh | sh
+    else
+        echo "Starship already installed."
+    fi
+}
+
+# Install fonts (e.g., FiraCode Nerd Font)
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
     FONT_NAME="FiraCodeNerdFont-Regular.ttf"
+
     if [ ! -f "$FONT_DIR/$FONT_NAME" ]; then
-        echo "Downloading font..."
+        echo "Downloading and installing font..."
         wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip
-        echo "Unzipping font..."
         unzip -o FiraCode.zip -d extracted_fonts
-        echo "Installing font..."
         sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
-        echo "Fonts Installed"
-        rm -r extracted_fonts FiraCode.zip
+        rm -rf extracted_fonts FiraCode.zip
+        echo "Font installed."
     else
         echo "Font already installed."
     fi
 }
 
-linkConfig() {
+# Set up fastfetch config
+setup_fastfetch() {
+    echo -e "${YELLOW}Setting up fastfetch config...${RC}"
+    mkdir -p "${HOME}/.config/fastfetch"
+    curl -sSLo "${HOME}/.config/fastfetch/config.jsonc" https://raw.githubusercontent.com/ChrisTitusTech/mybash/main/config.jsonc
+}
+
+# Link the configuration files for ZSH, Starship, and TMUX
+link_config() {
     USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
     OLD_ZSHRC="${USER_HOME}/.zshrc"
-    if [[ -e ${OLD_ZSHRC} ]]; then
-        echo -e "${YELLOW}Moving old zsh config file to ${USER_HOME}/.zshrc.bak${RC}"
-        if ! mv ${OLD_ZSHRC} ${USER_HOME}/.zshrc.bak; then
-            echo -e "${RED}Can't move the old zsh config file!${RC}"
-            exit 1
-        fi
+    
+    if [ -e "$OLD_ZSHRC" ]; then
+        echo -e "${YELLOW}Moving old .zshrc to .zshrc.bak${RC}"
+        mv "$OLD_ZSHRC" "${USER_HOME}/.zshrc.bak"
     fi
 
-    echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
+    # Set default shell to zsh
+    echo -e "${YELLOW}Changing default shell to ZSH...${RC}"
     sudo chsh -s /usr/bin/zsh
 
+    # Link Starship config
+    echo -e "${YELLOW}Linking Starship config...${RC}"
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         if [[ "$ID" == "kali" || "$ID_LIKE" == *"debian"* ]]; then
-            echo -e "${YELLOW}Kali or Debian-based system detected, linking starship_kali.toml...${RC}"
-            ln -svf ${GITPATH}/starship_kali.toml ${USER_HOME}/.config/starship.toml
+            ln -svf "${GITPATH}/starship_kali.toml" "${USER_HOME}/.config/starship.toml"
         else
-            echo -e "${YELLOW}Non-Kali system detected, linking default starship.toml...${RC}"
-            ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
+            ln -svf "${GITPATH}/starship.toml" "${USER_HOME}/.config/starship.toml"
         fi
     fi
-    
-    echo -e "${YELLOW}Linking new zsh config file...${RC}"
-    ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
+
+    # Link .zshrc
+    ln -svf "${GITPATH}/.zshrc" "${USER_HOME}/.zshrc"
 }
 
-
-install_TMUX() {
-    read -p "Would you like to install or update the TMUX configuration? [y/N] " install_tmux
-    if [[ "$install_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]
-    then
-        if [ ! -d "$HOME/.tmux" ]; then
-            cd
-            git clone https://github.com/its-ashu-otf/.tmux.git
-        else
-            read -p "TMUX configuration already exists. Would you like to update it? [y/N] " update_tmux
-            if [[ "$update_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]
-            then
-                cd $HOME/.tmux
-                git pull
-            fi
-        fi
-
-        ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
-        if [ ! -f "$HOME/.tmux.conf.local" ]; then
-            cp $HOME/.tmux/.tmux.conf.local $HOME
-        else
-            read -p ".tmux.conf.local already exists. Would you like to replace it? [y/N] " replace_tmux_local
-            if [[ "$replace_tmux_local" =~ ^([yY][eE][sS]|[yY])$ ]]
-            then
-                cp $HOME/.tmux/.tmux.conf.local $HOME
-            fi
-        fi
-    fi
-}
-
-# Function Calls
-
-fetch
-checkEnv
-installDepend
-installStarship
-installZoxide
-installtgpt
-setupFastfetchConfig
-linkConfig
-install_additional_dependencies
+# Main Script Execution
+display_welcome
+fetch_repo
+check_system_env
+install_dependencies
+install_software
+setup_fastfetch
 install_fonts
-install_TMUX
+link_config
 
-echo -e "${GREEN}Done! restart your shell to see the changes.${RC}"
+echo -e "${GREEN}Setup completed successfully! Please restart your terminal to apply changes.${RC}"
