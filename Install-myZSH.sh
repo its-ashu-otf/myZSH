@@ -34,14 +34,11 @@ center_text "Installer Version: 5.0.0 " "$line_length"
 echo -e "╙────────────────────────────────────────────────────────────╜\033[0m"
 echo
 
-
-
 command_exists() {
     command -v $1 >/dev/null 2>&1
 }
 
 fetch() {
-    ## Fetching Repo
     REPO_DIR="$HOME/.zsh/myZSH"
     if [ -d "$REPO_DIR" ]; then
         echo "Repository already exists. Checking for updates..."
@@ -65,14 +62,12 @@ fetch() {
 }
 
 checkEnv() {
-    ## Check for requirements.
     REQUIREMENTS='curl groups sudo'
     if ! command_exists ${REQUIREMENTS}; then
         echo -e "${RED}To run me, you need: ${REQUIREMENTS}${RC}"
         exit 1
     fi
 
-    ## Check Package Manager
     PACKAGEMANAGER='apt yum dnf pacman zypper emerge xbps-install nix-env'
     for pgm in ${PACKAGEMANAGER}; do
         if command_exists ${pgm}; then
@@ -96,14 +91,12 @@ checkEnv() {
 
     echo "Using ${SUDO_CMD} as privilege escalation software"
     
-    ## Check if the current directory is writable.
     GITPATH="$(dirname "$(realpath "$0")")"
     if [[ ! -w ${GITPATH} ]]; then
         echo -e "${RED}Can't write to ${GITPATH}${RC}"
         exit 1
     fi
 
-    ## Check SuperUser Group
     SUPERUSERGROUP='wheel sudo root'
     for sug in ${SUPERUSERGROUP}; do
         if groups | grep ${sug}; then
@@ -112,7 +105,6 @@ checkEnv() {
         fi
     done
 
-    ## Check if member of the sudo group.
     if ! groups | grep ${SUGROUP} >/dev/null; then
         echo -e "${RED}You need to be a member of the sudo group to run me!"
         exit 1
@@ -120,7 +112,6 @@ checkEnv() {
 }
 
 installDepend() {
-    ## Check for dependencies.
     DEPENDENCIES='zsh tar bat tree trash-cli fzf zoxide fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting grc colorize eza tgpt'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
@@ -146,101 +137,6 @@ installDepend() {
     fi
 }
 
-installtgpt() {
-    # Check if tgpt is not installed
-    if ! command -v tgpt &> /dev/null; then
-        # Download the install script silently
-        wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
-        # Run the install script
-        sudo bash install.sh
-        # Output success message
-        echo "tgpt installed successfully"
-    else
-        # If tgpt is already installed, inform the user
-        echo "tgpt is already installed"
-    fi
-}
-
-
-installStarship() {
-    if command_exists starship; then
-        echo "Starship already installed"
-        return
-    fi
-
-    if ! curl -sS https://starship.rs/install.sh | sh; then
-        echo -e "${RED}Something went wrong during starship install!${RC}"
-        exit 1
-    fi
-}
-
-installZoxide() {
-    if command_exists zoxide; then
-        echo "Zoxide already installed"
-        return
-    fi
-
-    if ! curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh; then
-        echo -e "${RED}Something went wrong during zoxide install!${RC}"
-        exit 1
-    fi
-}
-
-install_additional_dependencies() {
-    if ! command_exists joe; then
-        sudo apt install -y joe
-    fi
-    if ! command_exists meld; then
-        sudo apt install -y meld
-    fi
-    if ! command_exists xsel; then
-        sudo apt install -y xsel
-    fi
-    if ! command_exists xclip; then
-        sudo apt install -y xclip
-    fi
-    if ! command_exists tar; then
-        sudo apt install -y tar
-    fi
-    if ! command_exists tree; then
-        sudo apt install -y tree
-    fi
-    if ! command_exists trash-put; then
-        sudo pip install git+https://github.com/andreafrancia/trash-cli
-    fi
-
-    if ! command_exists bat; then
-        sudo apt install bat -y
-    fi
-
-    if ! command_exists multitail; then
-        # Check if the OS is Debian-based (including Kali, Parrot, etc.)
-        if [ -f /etc/os-release ]; then
-            . /etc/os-release
-            # Check if the system is Debian or Debian-like (Kali, Parrot, etc.)
-            if [[ "$ID" == "debian" || "$ID_LIKE" == *"debian"* ]]; then
-                echo "Installing multitail for Debian-based OS (including Kali, Parrot, etc.)..."
-                wget -q --show-progress http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
-                chmod +x multitail_7.1.2-1_amd64.deb
-                sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
-            else
-                echo "Skipping multitail installation. Not a Debian-based OS."
-            fi
-        fi
-    fi
-}
-
-
-setupFastfetchConfig() {
-    printf "%b\n" "${YELLOW}Copying Fastfetch config files...${RC}"
-    if [ -d "${HOME}/.config/fastfetch" ] && [ ! -d "${HOME}/.config/fastfetch-bak" ]; then
-        cp -r "${HOME}/.config/fastfetch" "${HOME}/.config/fastfetch-bak"
-    fi
-    mkdir -p "${HOME}/.config/fastfetch/"
-    curl -sSLo "${HOME}/.config/fastfetch/config.jsonc" https://raw.githubusercontent.com/ChrisTitusTech/mybash/main/config.jsonc
-}
-
-
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
     FONT_NAME="FiraCodeNerdFont-Regular.ttf"
@@ -259,10 +155,7 @@ install_fonts() {
 }
 
 linkConfig() {
-    ## Get the correct user home directory.
     USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
-    
-    ## Check if a zshrc file is already there.
     OLD_ZSHRC="${USER_HOME}/.zshrc"
     if [[ -e ${OLD_ZSHRC} ]]; then
         echo -e "${YELLOW}Moving old zsh config file to ${USER_HOME}/.zshrc.bak${RC}"
@@ -272,14 +165,11 @@ linkConfig() {
         fi
     fi
 
-    # Change Default Shell to ZSH
     echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
     sudo chsh -s /usr/bin/zsh
 
-    # Determine which starship configuration to link based on OS
     if [ -f /etc/os-release ]; then
         . /etc/os-release
-        # Check if the OS is Kali or Debian-based
         if [[ "$ID" == "kali" || "$ID_LIKE" == *"debian"* ]]; then
             echo -e "${YELLOW}Kali or Debian-based system detected, linking starship_kali.toml...${RC}"
             ln -svf ${GITPATH}/starship_kali.toml ${USER_HOME}/.config/starship.toml
@@ -290,7 +180,6 @@ linkConfig() {
     fi
     
     echo -e "${YELLOW}Linking new zsh config file...${RC}"
-    ## Make symbolic link for .zshrc.
     ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
 }
 
@@ -338,9 +227,4 @@ install_additional_dependencies
 install_fonts
 install_TMUX
 
-
-if linkConfig; then
-    echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
-else
-    echo -e "${RED}Something went wrong!${RC}"
-fi
+echo -e "${GREEN}Done! restart your shell to see the changes.${RC}"
