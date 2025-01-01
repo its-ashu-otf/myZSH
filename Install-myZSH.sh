@@ -243,22 +243,49 @@ setupFastfetchConfig() {
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
     FONT_NAME="FiraCodeNerdFont-Regular.ttf"
+    FIRA_ZIP="FiraCode.zip"
+    HACK_ZIP="Hack.zip"
+
+    # Check if the font is already installed
     if [ ! -f "$FONT_DIR/$FONT_NAME" ]; then
         echo "Downloading fonts..."
-        wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*FiraCode.zip' | cut -d '"' -f 4)
-        wget -q $(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep 'browser_download_url.*Hack.zip' | cut -d '"' -f 4)
-        echo "Unzipping font..."
-        unzip -o FiraCode.zip -d extracted_fonts
-        unzip -o Hack.zip -d extracted_fonts
-        echo "Installing font..."
+        
+        # Get the latest release download links
+        DOWNLOAD_URLS=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | \
+            grep -E 'browser_download_url.*(FiraCode.zip|Hack.zip)' | \
+            cut -d '"' -f 4)
+
+        # Download FiraCode and Hack font zips
+        for url in $DOWNLOAD_URLS; do
+            wget -q "$url"
+        done
+
+        echo "Unzipping fonts..."
+        
+        # Unzip both fonts
+        unzip -o "$FIRA_ZIP" -d extracted_fonts
+        unzip -o "$HACK_ZIP" -d extracted_fonts
+
+        # Check if the font directory exists, and create it if not
+        if [ ! -d "$FONT_DIR" ]; then
+            echo "Creating font directory: $FONT_DIR"
+            sudo mkdir -p "$FONT_DIR"
+        fi
+
+        echo "Installing fonts..."
+
+        # Move the fonts to the system font directory
         sudo mv extracted_fonts/*.ttf "$FONT_DIR/"
+
         echo "Fonts Installed"
-        rm -r extracted_fonts FiraCode.zip
-        rm -r extracted_fonts Hack.zip
+
+        # Cleanup
+        rm -r extracted_fonts "$FIRA_ZIP" "$HACK_ZIP"
     else
         echo "Font already installed."
     fi
 }
+
 
 linkConfig() {
     ## Get the correct user home directory.
