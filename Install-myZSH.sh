@@ -161,17 +161,36 @@ installStarship() {
 installtgpt() {
     # Check if tgpt is not installed
     if ! command -v tgpt &> /dev/null; then
-        # Download the install script silently
-        wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
+        # Download the install script using wget or curl
+        echo "tgpt not found. Installing..."
+        
+        if command -v wget &> /dev/null; then
+            wget -q https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -O install.sh
+        elif command -v curl &> /dev/null; then
+            curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install -o install.sh
+        else
+            echo "Error: Neither wget nor curl is installed. Please install one of these tools to proceed."
+            return 1
+        fi
+        
         # Run the install script
-        sudo bash install.sh
-        # Output success message
-        echo "tgpt installed successfully"
+        if sudo bash install.sh; then
+            # Output success message
+            echo "tgpt installed successfully"
+        else
+            # If installation failed
+            echo "Error: tgpt installation failed"
+            return 1
+        fi
+        
+        # Clean up the installation script
+        rm -f install.sh
     else
         # If tgpt is already installed, inform the user
         echo "tgpt is already installed"
     fi
 }
+
 
 installZoxide() {
     if command_exists zoxide; then
