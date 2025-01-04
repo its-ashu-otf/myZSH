@@ -380,7 +380,7 @@ alias web='cd /var/www/html'
 alias sgpt='tgpt --model meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo'
 
 # To check ip for VM's on Ethernet Interface
-alias ii ='ifconfig eth0'
+alias ii='ifconfig eth0'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
