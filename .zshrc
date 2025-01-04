@@ -273,6 +273,7 @@ if [ -x /usr/bin/dircolors ]; then
 	
     alias ls='eza --color=always --group-directories-first --icons'
     alias la='eza -la --color=always --group-directories-first --icons'
+    alias ll='exa --icons --long --group-directories-first --sort=size' #long listing format
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
@@ -378,6 +379,9 @@ alias web='cd /var/www/html'
 # Selecting Bydefault llama mode for tgpt (Temporary Solution)
 alias sgpt='tgpt --model meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo'
 
+# To check ip for VM's on Ethernet Interface
+alias ii ='ifconfig eth0'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -429,8 +433,7 @@ alias lu='ls -lurh'               # sort by access time
 alias lr='ls -lRh'                # recursive ls
 alias lt='ls -ltrh'               # sort by date
 alias lm='ls -alh |more'          # pipe through 'more'
-alias lw='ls -xAh'                # wide listing format
-alias ll='ls -Fls'                # long listing format
+alias lw='ls -xAh'                # wide listing format            
 alias labc='ls -lap'              # alphabetical sort
 alias lf="ls -l | egrep -v '^d'"  # files only
 alias ldir="ls -l | egrep '^d'"   # directories only
@@ -507,16 +510,6 @@ curl -fsSL https://christitus.com/linux | sh
 linutildev() {
 curl -fsSL https://christitus.com/linuxdev | sh
 }
-
-# AI Chat Integration Directly Through CLI
-askllama() {
-ollama run llama3.1
-}
-
-askcodellama() {
-ollama run codellama
-}
-
 
 # Extracts any archive(s) (if unp isn't installed)
 extract() {
