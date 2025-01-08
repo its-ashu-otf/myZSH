@@ -107,7 +107,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='zsh tar bat tree trash-cli fzf zoxide fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting grc colorize eza'
+    DEPENDENCIES='zsh tar bat tree trash-cli fzf zoxide fastfetch meld trash-cli zsh-autosuggestions zsh-syntax-highlighting grc colorize eza fd-find'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay && ! command_exists paru; then
