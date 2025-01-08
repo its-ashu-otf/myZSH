@@ -31,8 +31,43 @@ zsh_update() {
         else
             echo "Updating repository..."
             git pull
-	    zsh
-	    echo "Done"
+	    linkConfig() {
+		    ## Get the correct user home directory.
+		    USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
+		    
+		    ## Check if a zshrc file is already there.
+		    OLD_ZSHRC="${USER_HOME}/.zshrc"
+		    if [[ -e ${OLD_ZSHRC} ]]; then
+		        echo -e "${YELLOW}Moving old zsh config file to ${USER_HOME}/.zshrc.bak${RC}"
+		        if ! mv ${OLD_ZSHRC} ${USER_HOME}/.zshrc.bak; then
+		            echo -e "${RED}Can't move the old zsh config file!${RC}"
+		            exit 1
+		        fi
+		    fi
+		
+		    # Change Default Shell to ZSH
+		    echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
+		    sudo chsh -s /usr/bin/zsh
+		
+		    # Determine which starship configuration to link based on OS
+		    if [ -f /etc/os-release ]; then
+		        . /etc/os-release
+		        # Check if the OS is Kali or Debian-based
+		        if [[ "$ID" == "kali" || "$ID_LIKE" == *"debian"* ]]; then
+		            echo -e "${YELLOW}Kali or Debian-based system detected, linking starship_kali.toml...${RC}"
+		            ln -svf ${GITPATH}/starship_kali.toml ${USER_HOME}/.config/starship.toml
+		        else
+		            echo -e "${YELLOW}Non-Kali system detected, linking default starship.toml...${RC}"
+		            ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
+		        fi
+		    fi
+		    
+		    echo -e "${YELLOW}Linking new zsh config file...${RC}"
+		    ## Make symbolic link for .zshrc.
+		    ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
+		}
+		
+	echo "Done"
         fi
     else
         echo "Repository does not exist. Cloning..."
