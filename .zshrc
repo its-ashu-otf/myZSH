@@ -44,6 +44,31 @@ zsh_update() {
 }
 
 export AI_PROVIDER=duckduckgo
+
+#######################################################
+#		    FZF Integrations		      #
+#######################################################
+# Default command for FZF to list files
+export FZF_DEFAULT_COMMAND="fdfind --hidden --strip-cwd-prefix --exclude .git"
+
+# Use the same command for Ctrl-T
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Use fd to list only directories (including hidden)
+export FZF_ALT_C_COMMAND="fdfind --type=d --hidden --strip-cwd-prefix"
+
+# Default options for FZF interface
+export FZF_DEFAULT_OPTS="--height 70% --layout=reverse --border --color=hl:#2dd4bf"
+
+# Options for FZF inside tmux
+export FZF_TMUX_OPTS="-p 100%,100%"
+
+# Ctrl-T with a preview using batcat (make sure batcat or bat is installed)
+export FZF_CTRL_T_OPTS="--preview 'batcat --color=always -n --line-range :500 {}' --bind 'enter:execute(nano)'"
+
+# Alt-C with directory preview using eza (make sure eza is installed)
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
 #######################################################
 # 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
 #######################################################
