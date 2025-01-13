@@ -12,6 +12,11 @@ fi
 # SOURCED ALIASES AND SCRIPTS
 #######################################################
 
+# TMUX Colours Addition
+if [ "$TERM" != "xterm-256color" ]; then
+      export TERM=xterm-256color
+    fi
+
 # Execute fastfetch if available
 if [ -x "$(command -v fastfetch)" ]; then
     fastfetch
