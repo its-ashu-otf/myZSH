@@ -30,7 +30,7 @@ zsh_update
 - **Terminal Icons:** Added Terminal Icons
 - **New Gen `ls`:** New Generation of ls added
 - **Colourful O/P:** Colorized Nmap Output
-- **TMUX**: Integrated my personal tmux config.
+- **Multi-Distro Support**: Tested on Ubuntu, Kali and Arch.
 
 #### Aliases and Functions
 
