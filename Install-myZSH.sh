@@ -28,6 +28,86 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+fetch() {
+    ## Fetching Repo
+    REPO_DIR="$HOME/.zsh/myZSH"
+    if [ -d "$REPO_DIR" ]; then
+        echo "Repository already exists. Checking for updates..."
+        cd "$REPO_DIR"
+        git fetch origin
+        LOCAL=$(git rev-parse @)
+        REMOTE=$(git rev-parse @{u})
+        if [ $LOCAL = $REMOTE ]; then
+            echo "Repository is up to date."
+        else
+            echo "Updating repository..."
+            git pull
+        fi
+    else
+        echo "Repository does not exist. Cloning..."
+        mkdir -p "$HOME/.zsh"
+        cd "$HOME/.zsh"
+        git clone https://github.com/its-ashu-otf/myZSH.git
+        cd myZSH
+    fi
+}
+
+checkEnv() {
+    ## Check for requirements.
+    REQUIREMENTS='curl groups sudo'
+    if ! command_exists ${REQUIREMENTS}; then
+        echo -e "${RED}To run me, you need: ${REQUIREMENTS}${RC}"
+        exit 1
+    fi
+
+    ## Check Package Manager
+    PACKAGEMANAGER='apt yum dnf pacman zypper emerge xbps-install nix-env'
+    for pgm in ${PACKAGEMANAGER}; do
+        if command_exists ${pgm}; then
+            PACKAGER=${pgm}
+            echo -e "Using ${pgm}"
+        fi
+    done
+
+    if [ -z "${PACKAGER}" ]; then
+        echo -e "${RED}Can't find a supported package manager"
+        exit 1
+    fi
+
+    if command_exists sudo; then
+        SUDO_CMD="sudo"
+    elif command_exists doas && [ -f "/etc/doas.conf" ]; then
+        SUDO_CMD="doas"
+    else
+        SUDO_CMD="su -c"
+    fi
+
+    echo "Using ${SUDO_CMD} as privilege escalation software"
+    
+    ## Check if the current directory is writable.
+    GITPATH="$(dirname "$(realpath "$0")")"
+    if [[ ! -w ${GITPATH} ]]; then
+        echo -e "${RED}Can't write to ${GITPATH}${RC}"
+        exit 1
+    fi
+
+    ## Check SuperUser Group
+    SUPERUSERGROUP='wheel sudo root'
+    for sug in ${SUPERUSERGROUP}; do
+        if groups | grep ${sug}; then
+            SUGROUP=${sug}
+            echo -e "Super user group ${SUGROUP}"
+        fi
+    done
+
+    ## Check if member of the sudo group.
+    if ! groups | grep ${SUGROUP} >/dev/null; then
+        echo -e "${RED}You need to be a member of the sudo group to run me!"
+        exit 1
+    fi
+}
+
+
 # Check and install dependencies
 install_dependencies() {
     local DEPENDENCIES=(
