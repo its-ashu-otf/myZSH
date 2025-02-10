@@ -23,6 +23,8 @@ cat << "EOF"
      /___/                                                     
 EOF
 
+echo -e "${YELLOW}Starting installation...${RC}"
+
 # Helper function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -106,7 +108,6 @@ checkEnv() {
         exit 1
     fi
 }
-
 
 # Check and install dependencies
 install_dependencies() {
@@ -289,6 +290,15 @@ install_fonts() {
     fi
 }
 
+setupFastfetchConfig() {
+    printf "%b\n" "${YELLOW}Copying Fastfetch config files...${RC}"
+    if [ -d "${HOME}/.config/fastfetch" ] && [ ! -d "${HOME}/.config/fastfetch-bak" ]; then
+        cp -r "${HOME}/.config/fastfetch" "${HOME}/.config/fastfetch-bak"
+    fi
+    mkdir -p "${HOME}/.config/fastfetch/"
+    curl -sSLo "${HOME}/.config/fastfetch/config.jsonc" https://raw.githubusercontent.com/ChrisTitusTech/mybash/main/config.jsonc
+}
+
 linkConfig() {
     ## Get the correct user home directory.
     USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
@@ -303,30 +313,9 @@ linkConfig() {
         fi
     fi
 
-        # Change Default Shell to ZSH
-        echo -e "${YELLOW}Ensuring the default shell is set to ZSH...${RC}"
-        
-        # Check if /usr/bin/zsh exists
-        if [ -x "/usr/bin/zsh" ]; then
-            TARGET_SHELL="/usr/bin/zsh"
-        elif [ -x "/bin/zsh" ]; then
-            TARGET_SHELL="/bin/zsh"
-        else
-            echo -e "${RED}ZSH is not installed or cannot be found. Please install it first.${RC}"
-            exit 1
-        fi
-        
-        # Set the default shell
-        if [ "$SHELL" != "$TARGET_SHELL" ]; then
-            if sudo chsh -s "$TARGET_SHELL" "${USER}"; then
-                echo -e "${GREEN}Default shell successfully changed to ZSH.${RC}"
-            else
-                echo -e "${RED}Failed to change the default shell. Please check your permissions.${RC}"
-                exit 1
-            fi
-        else
-            echo -e "${YELLOW}The default shell is already set to ZSH.${RC}"
-        fi
+    # Change Default Shell to ZSH
+    echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
+    sudo chsh -s /usr/bin/zsh
 
     # Determine which starship configuration to link based on OS
     if [ -f /etc/os-release ]; then
@@ -346,19 +335,50 @@ linkConfig() {
     ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
 }
 
-# Main script execution
-main() {
-    echo -e "${YELLOW}Starting installation...${RC}"
 
-    install_dependencies
-    install_starship
-    install_zoxide
-    install_fastfetch
-    install_tgpt
-    install_fonts
-    linkConfig
-    
-    echo -e "${GREEN}All installations completed successfully! Restart your shell to see changes.${RC}"
+install_TMUX() {
+    read -p "Would you like to install or update the TMUX configuration? [y/N] " install_tmux
+    if [[ "$install_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+        if [ ! -d "$HOME/.tmux" ]; then
+            cd
+            git clone https://github.com/its-ashu-otf/.tmux.git
+        else
+            read -p "TMUX configuration already exists. Would you like to update it? [y/N] " update_tmux
+            if [[ "$update_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]
+            then
+                cd $HOME/.tmux
+                git pull
+            fi
+        fi
+
+        ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
+        if [ ! -f "$HOME/.tmux.conf.local" ]; then
+            cp $HOME/.tmux/.tmux.conf.local $HOME
+        else
+            read -p ".tmux.conf.local already exists. Would you like to replace it? [y/N] " replace_tmux_local
+            if [[ "$replace_tmux_local" =~ ^([yY][eE][sS]|[yY])$ ]]
+            then
+                cp $HOME/.tmux/.tmux.conf.local $HOME
+            fi
+        fi
+    fi
 }
+if linkConfig; then
+    echo -e "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
+else
+    echo -e "${RED}Something went wrong!${RC}"
+fi
 
-main
+# Function Calls
+fetch
+checkEnv
+install_dependencies
+install_starship
+install_zoxide
+install_fastfetch
+install_tgpt
+install_fonts
+linkConfig
+install_TMUX
+    
