@@ -18,9 +18,10 @@ if [ "$TERM" != "xterm-256color" ]; then
     fi
 
 # Execute fastfetch if available
-if command -v fastfetch 2>/dev/null; then
+if [ -x "$(command -v fastfetch)" ]; then
     fastfetch
 fi
+
 
 zsh_update() {
     ## Fetching Repo
