@@ -18,7 +18,7 @@ if [ "$TERM" != "xterm-256color" ]; then
     fi
 
 # Execute fastfetch if available
-if [ -x "$(command -v fastfetch)" ]; then
+if command -v fastfetch 2>/dev/null; then
     fastfetch
 fi
 
