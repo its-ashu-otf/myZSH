@@ -137,10 +137,3 @@ The `config.jsonc` file configures [fastfetch](https://github.com/AlexRogalskiy/
 This `.zshrc` configuration offers a powerful and customizable terminal environment suitable for various Unix-like systems. It enhances productivity through smart aliases, functions, and integrated tools while maintaining flexibility for system-specific needs. Whether you're a developer, system administrator, or power user, this setup aims to make your terminal experience more efficient and enjoyable.
 
 For any issues, suggestions, or contributions, please open an issue or pull request in this repository. We welcome community involvement to make this configuration even better!
-
-# Features
-
-#### Enhancements and Utilities
-
-
-
