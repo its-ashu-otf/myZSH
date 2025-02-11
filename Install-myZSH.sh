@@ -217,6 +217,15 @@ install_fastfetch() {
     fi
 }
 
+setupFastfetchConfig() {
+    printf "%b\n" "${YELLOW}Copying Fastfetch config files...${RC}"
+    if [ -d "${HOME}/.config/fastfetch" ] && [ ! -d "${HOME}/.config/fastfetch-bak" ]; then
+        cp -r "${HOME}/.config/fastfetch" "${HOME}/.config/fastfetch-bak"
+    fi
+    mkdir -p "${HOME}/.config/fastfetch/"
+    curl -sSLo "${HOME}/.config/fastfetch/config.jsonc" https://raw.githubusercontent.com/ChrisTitusTech/mybash/main/config.jsonc
+}
+
 install_fonts() {
     FONT_DIR="/usr/local/share/fonts"
     FONT_NAME="FiraCodeNerdFont-Regular.ttf"
@@ -377,6 +386,7 @@ install_dependencies
 install_starship
 install_zoxide
 install_fastfetch
+setupFastfetchConfig
 install_tgpt
 install_fonts
 linkConfig
