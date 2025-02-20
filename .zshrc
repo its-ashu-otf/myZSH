@@ -107,8 +107,8 @@ export FZF_TMUX_OPTS="-p 100%,100%"
 # Ctrl-T with a preview using batcat (make sure batcat or bat is installed)
 export FZF_CTRL_T_OPTS="--preview 'batcat --color=always -n --line-range :500 {}' --bind 'enter:execute(nano)'"
 
-# Alt-C with directory preview using eza (make sure eza is installed)
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+# Alt-C with directory preview using exa (make sure exa is installed)
+export FZF_ALT_C_OPTS="--preview 'e --tree --color=always {} | head -200'"
 
 #######################################################
 # 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
@@ -337,8 +337,8 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     export LS_COLORS="$LS_COLORS:ow=30;44:" # fix ls color for folders with 777 permissions
 	
-    alias ls='eza --color=always --group-directories-first --icons'
-    alias la='eza -la --color=always --group-directories-first --icons'
+    alias ls='exa --color=always --group-directories-first --icons'
+    alias la='exa -la --color=always --group-directories-first --icons'
     alias ll='exa --icons --long --group-directories-first --sort=size' #long listing format
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
