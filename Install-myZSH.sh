@@ -115,6 +115,7 @@ install_dependencies() {
         "zsh" "curl" "git" "tar" "tree" "fzf" "zoxide" "fastfetch"
         "meld" "multitail" "trash-cli" "zsh-autosuggestions"
         "zsh-syntax-highlighting" "grc" "colorize" "eza" "exa" "fd-find"
+        "zsh-autocomplete"
     )
     local PACKAGE_MANAGER=""
     local MANAGERS=("apt" "yum" "dnf" "pacman" "zypper" "emerge" "xbps-install" "nix-env")
