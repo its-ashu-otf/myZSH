@@ -114,8 +114,7 @@ install_dependencies() {
     local DEPENDENCIES=(
         "zsh" "curl" "git" "tar" "tree" "fzf" "zoxide" "fastfetch"
         "meld" "multitail" "trash-cli" "zsh-autosuggestions"
-        "zsh-syntax-highlighting" "grc" "colorize" "eza" "exa" "fd-find"
-        "zsh-autocomplete"
+        "zsh-syntax-highlighting" "grc" "colorize" "eza" "fd-find"
     )
     local PACKAGE_MANAGER=""
     local MANAGERS=("apt" "yum" "dnf" "pacman" "zypper" "emerge" "xbps-install" "nix-env")
@@ -158,7 +157,7 @@ install_dependencies() {
                 echo "Installing multitail for Debian-based OS (including Kali, Parrot, etc.)..."
                 wget -q --show-progress http://ftp.de.debian.org/debian/pool/main/m/multitail/multitail_7.1.2-1_amd64.deb
                 chmod +x multitail_7.1.2-1_amd64.deb
-                sudo apt install ./multitail_7.1.2-1_amd64.deb
+                sudo dpkg -i ./multitail_7.1.2-1_amd64.deb
             else
                 echo "Skipping multitail installation. Not a Debian-based OS."
             fi
@@ -216,15 +215,6 @@ install_fastfetch() {
     else
         echo "Fastfetch is already installed."
     fi
-}
-
-setupFastfetchConfig() {
-    printf "%b\n" "${YELLOW}Copying Fastfetch config files...${RC}"
-    if [ -d "${HOME}/.config/fastfetch" ] && [ ! -d "${HOME}/.config/fastfetch-bak" ]; then
-        cp -r "${HOME}/.config/fastfetch" "${HOME}/.config/fastfetch-bak"
-    fi
-    mkdir -p "${HOME}/.config/fastfetch/"
-    curl -sSLo "${HOME}/.config/fastfetch/config.jsonc" https://raw.githubusercontent.com/ChrisTitusTech/mybash/main/config.jsonc
 }
 
 install_fonts() {
@@ -387,7 +377,6 @@ install_dependencies
 install_starship
 install_zoxide
 install_fastfetch
-setupFastfetchConfig
 install_tgpt
 install_fonts
 linkConfig
