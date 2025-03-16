@@ -14,14 +14,13 @@ fi
 
 # TMUX Colours Addition
 if [ "$TERM" != "xterm-256color" ]; then
-      export TERM=xterm-256color
-    fi
+    export TERM=xterm-256color
+fi
 
 # Execute fastfetch if available
 if [ -x "$(command -v fastfetch)" ]; then
     fastfetch
 fi
-
 
 zsh_update() {
     ## Fetching Repo
@@ -32,48 +31,13 @@ zsh_update() {
         git fetch origin
         LOCAL=$(git rev-parse @)
         REMOTE=$(git rev-parse @{u})
-        if [ $LOCAL = $REMOTE ]; then
+        if [ "$LOCAL" = "$REMOTE" ]; then
             echo "Repository is up to date."
         else
             echo "Updating repository..."
             git pull
-	    linkConfig() {
-		    ## Get the correct user home directory.
-		    USER_HOME=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6)
-		    
-		    ## Check if a zshrc file is already there.
-		    OLD_ZSHRC="${USER_HOME}/.zshrc"
-		    if [[ -e ${OLD_ZSHRC} ]]; then
-		        echo -e "${YELLOW}Moving old zsh config file to ${USER_HOME}/.zshrc.bak${RC}"
-		        if ! mv ${OLD_ZSHRC} ${USER_HOME}/.zshrc.bak; then
-		            echo -e "${RED}Can't move the old zsh config file!${RC}"
-		            exit 1
-		        fi
-		    fi
-		
-		    # Change Default Shell to ZSH
-		    echo -e "${YELLOW}Making Sure Default Shell is set to ZSH...${RC}"
-		    sudo chsh -s /usr/bin/zsh
-		
-		    # Determine which starship configuration to link based on OS
-		    if [ -f /etc/os-release ]; then
-		        . /etc/os-release
-		        # Check if the OS is Kali or Debian-based
-		        if [[ "$ID" == "kali" || "$ID_LIKE" == *"debian"* ]]; then
-		            echo -e "${YELLOW}Kali or Debian-based system detected, linking starship_kali.toml...${RC}"
-		            ln -svf ${GITPATH}/starship_kali.toml ${USER_HOME}/.config/starship.toml
-		        else
-		            echo -e "${YELLOW}Non-Kali system detected, linking default starship.toml...${RC}"
-		            ln -svf ${GITPATH}/starship.toml ${USER_HOME}/.config/starship.toml
-		        fi
-		    fi
-		    
-		    echo -e "${YELLOW}Linking new zsh config file...${RC}"
-		    ## Make symbolic link for .zshrc.
-		    ln -svf ${GITPATH}/.zshrc ${USER_HOME}/.zshrc
-		}
-		
-	echo "Done"
+            linkConfig
+            echo "Done"
         fi
     else
         echo "Repository does not exist. Cloning..."
@@ -84,10 +48,46 @@ zsh_update() {
     fi
 }
 
+linkConfig() {
+    ## Get the correct user home directory.
+    USER_HOME=$(getent passwd "${SUDO_USER:-$USER}" | cut -d: -f6)
+    
+    ## Check if a zshrc file is already there.
+    OLD_ZSHRC="${USER_HOME}/.zshrc"
+    if [[ -e ${OLD_ZSHRC} ]]; then
+        echo "Moving old zsh config file to ${USER_HOME}/.zshrc.bak"
+        if ! mv "${OLD_ZSHRC}" "${USER_HOME}/.zshrc.bak"; then
+            echo "Can't move the old zsh config file!"
+            exit 1
+        fi
+    fi
+
+    # Change Default Shell to ZSH
+    echo "Making Sure Default Shell is set to ZSH..."
+    sudo chsh -s /usr/bin/zsh
+
+    # Determine which starship configuration to link based on OS
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        # Check if the OS is Kali or Debian-based
+        if [[ "$ID" == "kali" || "$ID_LIKE" == *"debian"* ]]; then
+            echo "Kali or Debian-based system detected, linking starship_kali.toml..."
+            ln -svf "${GITPATH}/starship_kali.toml" "${USER_HOME}/.config/starship.toml"
+        else
+            echo "Non-Kali system detected, linking default starship.toml..."
+            ln -svf "${GITPATH}/starship.toml" "${USER_HOME}/.config/starship.toml"
+        fi
+    fi
+    
+    echo "Linking new zsh config file..."
+    ## Make symbolic link for .zshrc.
+    ln -svf "${GITPATH}/.zshrc" "${USER_HOME}/.zshrc"
+}
+
 export AI_PROVIDER=duckduckgo
 
 #######################################################
-#		    FZF Integrations		      #
+# FZF Integrations
 #######################################################
 # Default command for FZF to list files
 export FZF_DEFAULT_COMMAND="fdfind --hidden --strip-cwd-prefix --exclude .git"
@@ -108,14 +108,14 @@ export FZF_TMUX_OPTS="-p 100%,100%"
 export FZF_CTRL_T_OPTS="--preview 'batcat --color=always -n --line-range :500 {}' --bind 'enter:execute(nano)'"
 
 # Alt-C with directory preview using exa (make sure exa is installed)
-export FZF_ALT_C_OPTS="--preview 'e --tree --color=always {} | head -200'"
+export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 #######################################################
-# 	ZSH AUTOCOMPLETIONS AND OTHER CONFIGS	      #
+# ZSH AUTOCOMPLETIONS AND OTHER CONFIGS
 #######################################################
 
 setopt autocd              # change directory just by typing its name
-setopt correct            # auto correct mistakes
+setopt correct             # auto correct mistakes
 setopt interactivecomments # allow comments in interactive mode
 setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
 setopt nonomatch           # hide error message if there is no match for the pattern
@@ -174,16 +174,12 @@ setopt hist_expire_dups_first # delete duplicates first when HISTFILE size excee
 setopt hist_ignore_dups       # ignore duplicated commands history list
 setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
-#setopt share_history         # share command history data
 
 # force zsh to show the complete history
 alias history="history 0"
 
 # configure `time` format
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -380,7 +376,6 @@ if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
 
-                                                                  
 #######################################################
 # EXPORTS
 #######################################################
@@ -883,7 +878,7 @@ function hb {
 }
 
 #######################################################
-# 	Set the ultimate amazing command prompt	      #
+# Set the ultimate amazing command prompt
 #######################################################
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
@@ -928,7 +923,7 @@ fzf_i () {
 zle -N fzf_i
 bindkey '^e' fzf_i
 #######################################################
-# 		Shell Integrations		      #
+# Shell Integrations
 #######################################################
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
