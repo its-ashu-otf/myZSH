@@ -3,6 +3,7 @@
 
 # Title: myZSH - Ultimate ZSH Configuration
 # Author: Ashutosh Gupta (its-ashu-otf)
+# Version: 7.0
 # Date: 2025-04-07
 # Description: Zsh configuration file with various customizations and functions.
 
@@ -821,9 +822,6 @@ function hb {
     fi
 }
 
-
-
-
 #######################################################
 #                   ZSH OPTIONS                       #   
 #######################################################
@@ -884,7 +882,14 @@ WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 # hide EOL sign ('%')
 PROMPT_EOL_MARK=""
 
-
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*|Eterm|aterm|kterm|gnome*|alacritty)
+    TERM_TITLE=$'\e]0;${debian_chroot:+($debian_chroot)}${VIRTUAL_ENV:+($(basename $VIRTUAL_ENV))}%n@%m: %~\a'
+    ;;
+*)
+    ;;
+esac
 
 #######################################################
 # AUTOCOMPLETION CONFIGURATION
@@ -925,37 +930,6 @@ setopt inc_append_history    # append history to file immediately, not when shel
 setopt extended_history      # save timestamp and command in history file
 setopt hist_save_no_dups     # don't save duplicate commands in history file
 setopt hist_find_no_dups     # don't show duplicate commands in history search
-
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*|Eterm|aterm|kterm|gnome*|alacritty)
-    TERM_TITLE=$'\e]0;${debian_chroot:+($debian_chroot)}${VIRTUAL_ENV:+($(basename $VIRTUAL_ENV))}%n@%m: %~\a'
-    ;;
-*)
-    ;;
-esac
-
-precmd() {
-    # Print the previously configured title
-    print -Pnr -- "$TERM_TITLE"
-
-    # Print a new line before the prompt, but only if it is not the first line
-    if [ "$NEWLINE_BEFORE_PROMPT" = yes ]; then
-        if [ -z "$_NEW_LINE_BEFORE_PROMPT" ]; then
-            _NEW_LINE_BEFORE_PROMPT=1
-        else
-            print ""
-        fi
-    fi
-}
-
-
-
-
-    
-
-
 
 #######################################################
 #             Key Bindings and Shortcuts              #
