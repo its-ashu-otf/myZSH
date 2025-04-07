@@ -661,16 +661,19 @@ precmd() {
 
 # enable color support of ls, less and man, and also add handy aliases
 
-# fix for man pages colours
-export GROFF_NO_SGR=1
+# Fix for man pages colors
+    export GROFF_NO_SGR=1
 
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    export LS_COLORS="$LS_COLORS:ow=30;44:" # fix ls color for folders with 777 permissions
+# Configure LS_COLORS for better visibility
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        export LS_COLORS="$LS_COLORS:ow=30;44:" # Fix ls color for folders with 777 permissions
+    fi
 
+# Aliases for ls with proper color support
     alias ls='exa --color=always --group-directories-first --icons'
     alias la='exa -la --color=always --group-directories-first --icons'
-    alias ll='exa --icons --long --group-directories-first --sort=size' #long listing format
+    alias ll='exa --icons --long --group-directories-first --sort=size' # Long listing format
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
