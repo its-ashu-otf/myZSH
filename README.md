@@ -25,10 +25,10 @@ curl -fsSL https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/Install-myZ
 
 The `Install-myZSH.sh` script automates the installation process by:
 
-- Creating necessary directories (`linuxtoolbox/myZSH`)
+- Creating necessary directories (`myZSH`)
 - Cloning the repository
-- Installing dependencies (bash-completion, neovim, starship, fzf, zoxide)
-- Installing the MesloLGS Nerd Font required for the prompt
+- Installing dependencies (zsh-completion, starship, fzf, zoxide)
+- Installing the FiraCode Nerd Font required for the prompt
 - Linking configuration files (`.zshrc` and `starship.toml`) to your home directory
 - Setting up additional utilities like `fastfetch`
 
@@ -64,7 +64,6 @@ The `.zshrc` file defines aliases, functions, and environment variables to enhan
 
 The `starship.toml` file configures the [Starship](https://starship.rs/) prompt, providing a highly customizable and informative shell prompt. It includes:
 
-- **Hacker-Themed Prompt**: Aesthetic design with vibrant colors and symbols
 - **Module Configurations**: Customizes modules like `python`, `git`, `docker_context`, and various programming languages
 - **Hostname Integration**: Displays the system hostname in the prompt for better context
 - **Format Customization**: Structures the layout and truncation of paths for a cleaner look
