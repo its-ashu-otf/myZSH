@@ -1,6 +1,5 @@
 ## The Ultimate ZSH Prompt
 
-
 ## Overview
 
 This repository provides a comprehensive `.zshrc` configuration along with supporting scripts and configuration files to enhance your terminal experience in Unix-like operating systems. It configures the shell session by setting up aliases, defining functions, customizing the prompt, and more, significantly improving the terminal's usability and power.
@@ -8,9 +7,9 @@ This repository provides a comprehensive `.zshrc` configuration along with suppo
 ## Table of Contents
 
 - [Installation](#installation)
-- [Uninstallation](#uninstallation)
+- [Updating](#updating)
 - [Configuration Files](#configuration-files)
-  - [.bashrc](#bashrc)
+  - [.zshrc](#zshrc)
   - [starship.toml](#starshiptoml)
   - [config.jsonc](#configjsonc)
 - [Key Features](#key-features)
@@ -23,15 +22,7 @@ This repository provides a comprehensive `.zshrc` configuration along with suppo
 ```zsh
 curl -fsSL https://raw.githubusercontent.com/its-ashu-otf/myZSH/main/Install-myZSH.sh | bash
 ```
-![render1734625237861](https://github.com/user-attachments/assets/a661b896-7260-44a1-8c37-72f63c57409e)
 
-## For Updating 
-
-Simply run this in terminal 
-
-```zsh
-zsh_update
-```
 The `Install-myZSH.sh` script automates the installation process by:
 
 - Creating necessary directories (`linuxtoolbox/myZSH`)
@@ -43,6 +34,20 @@ The `Install-myZSH.sh` script automates the installation process by:
 
 Ensure you have the required permissions and a supported package manager before running the script.
 
+## Updating
+
+To update the configuration, simply run:
+
+```zsh
+update-MyZSH
+```
+
+This function ensures that local changes are ignored, and the latest updates from the repository are fetched and applied. It performs the following steps:
+
+- Resets local changes
+- Fetches the latest changes from the remote repository
+- Updates configuration files and links them to your home directory
+
 ## Configuration Files
 
 ### `.zshrc`
@@ -50,14 +55,18 @@ Ensure you have the required permissions and a supported package manager before 
 The `.zshrc` file defines aliases, functions, and environment variables to enhance your shell experience. Key features include:
 
 - **Aliases**: Shortcuts for common commands (e.g., `alias cp='cp -i'`)
-- **Functions**: Custom functions for tasks like extracting archives and copying files with progress
+- **Functions**: Custom functions for tasks like extracting archives, managing services, and configuring firewalls
+- **System Initialization Detection**: Automatically detects and configures commands for `systemd`, `SysVinit`, `OpenRC`, or `runit`
+- **SSH Manager**: Simplifies SSH management with options to start, stop, restart, and configure SSH
+- **Firewall Manager**: Provides an easy-to-use interface for managing firewalls (`ufw`, `firewalld`, or `iptables`)
 
 ### `starship.toml`
 
 The `starship.toml` file configures the [Starship](https://starship.rs/) prompt, providing a highly customizable and informative shell prompt. It includes:
 
-- **Theme Settings**: Defines colors and symbols for different prompt segments
+- **Hacker-Themed Prompt**: Aesthetic design with vibrant colors and symbols
 - **Module Configurations**: Customizes modules like `python`, `git`, `docker_context`, and various programming languages
+- **Hostname Integration**: Displays the system hostname in the prompt for better context
 - **Format Customization**: Structures the layout and truncation of paths for a cleaner look
 
 ### `config.jsonc`
@@ -74,57 +83,60 @@ The `config.jsonc` file configures [fastfetch](https://github.com/AlexRogalskiy/
    - Shortcuts for common commands
    - Custom functions for complex operations (e.g., extracting archives, copying with progress)
 
-2. **Prompt Customization and History Management**
+2. **System Management**
+   - Detects and manages services based on the system's init system (`systemd`, `SysVinit`, `OpenRC`, or `runit`)
+   - Provides a simple interface for starting, stopping, restarting, and checking the status of applications
+
+3. **Firewall Management**
+   - Supports `ufw`, `firewalld`, and `iptables`
+   - Allows checking status, resetting, reloading, and managing ports
+
+4. **SSH Manager**
+   - Simplifies SSH management with options to start, stop, restart, and configure SSH
+   - Includes a quick-connect feature for remote SSH sessions
+
+5. **Prompt Customization and History Management**
    - Configures PROMPT_COMMAND for automatic history saving
    - Manages history file size and handles duplicates
 
-3. **Enhancements and Utilities**
+6. **Enhancements and Utilities**
    - Improves command output readability with colors
    - Introduces safer file operations (e.g., using `trash` instead of `rm`)
    - Integrates Zoxide for easy directory navigation
 
-4. **Installation and Configuration Helpers**
-   - Auto-installs necessary utilities based on system type
-   - Provides functions to edit important configuration files
-
-5. **AI Integration**
+7. **AI Integration**
    - Advanced AI Integration in Shell
 
-7. **Configuration Editors**
+8. **Configuration Editors**
    - Functions to edit important configuration files directly, e.g., `apacheconfig()` for Apache server configurations
 
-8. **Color and Formatting**
+9. **Color and Formatting**
    - Enhancements for command output readability using colors and formatting for tools like `ls`, `grep`, and `man`.
 
-9. **Navigation Shortcuts**
+10. **Navigation Shortcuts**
     - Aliases to simplify directory navigation, e.g., `alias ..='cd ..'` to go up one directory.
 
-10. **Safety Features**
+11. **Safety Features**
     - Aliases for safer file operations, like using trash instead of `rm` for deleting files, to prevent accidental data loss.
 
-11. **Extensive Zoxide support**
-    - Easily navigate with `z`, `zi`, or pressing Ctrl+f to launch zi to see frequently used navigation directories.
-
-12. **Terminal C/P**
-    - PB Copy and paste using xsel for terminal copy and pasting.
+12. **Extensive Zoxide Support**
+    - Easily navigate with `z`, `zi`, or pressing Ctrl+f to launch `zi` to see frequently used navigation directories.
 
 13. **Terminal Icons**
-    - Added Terminal Icons
+    - Added Terminal Icons for better visual representation.
 
 14. **New Gen `ls`**
-    - New Generation of ls added
+    - Replaces the default `ls` with a modern, colorful alternative.
 
-15. **Colourful O/P**
-    - Colorized Nmap Output
+15. **Multi-Distro Support**
+    - Tested on Ubuntu, Kali, and Arch Linux.
 
-16. **Multi-Distro Support**
-    - Tested on Ubuntu, Kali and Arch.
- 
 ## Advanced Functions
 
 - System information display
 - Networking utilities (e.g., IP address checks)
 - Resource monitoring tools
+- Service management for applications like Docker, MySQL, and MongoDB
 
 ## System-Specific Configurations
 
