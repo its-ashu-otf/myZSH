@@ -81,7 +81,7 @@ check_environment() {
     fi
 
     if command_exists sudo; then
-        SUDO_CMD="sudo"
+        SUDO_CMD=$(command -v sudo)
     else
         print_colored "$RED" "sudo is required but not found."
         exit 1
@@ -139,11 +139,42 @@ install_fastfetch() {
     fi
 }
 
+# Create Fastfetch configuration
+create_fastfetch_config() {
+    local CONFIG_DIR="$HOME/.config/fastfetch"
+    local CONFIG_FILE="$CONFIG_DIR/config.jsonc"
+    
+    mkdir -p "$CONFIG_DIR"
+    [ -e "$CONFIG_FILE" ] && rm -f "$CONFIG_FILE"
+    
+    if ! ln -svf "$REPO_DIR/config.jsonc" "$CONFIG_FILE"; then
+        print_colored "$RED" "Failed to create symbolic link for fastfetch config"
+        exit 1
+    fi
+}
+
+# Install tgpt
+install_tgpt() {
+    print_colored "$YELLOW" "Installing tgpt..."
+    if ! command_exists tgpt; then
+        curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin
+        print_colored "$GREEN" "tgpt installed successfully."
+    else
+        print_colored "$GREEN" "tgpt is already installed."
+    fi
+}
+
 # Install fonts
 install_fonts() {
     local FONT_NAME="FiraCode Nerd Font"
     local FONT_DIR="/usr/local/share/fonts"
     local TEMP_DIR=""
+
+    # Ensure required commands are available
+    if ! command_exists unzip || ! command_exists fc-list; then
+        print_colored "$RED" "Missing required commands: unzip or fc-list. Please install them and try again."
+        exit 1
+    fi
 
     # Check if the font is already installed
     if fc-list | grep -i "FiraCode" | grep -qi "Nerd"; then
@@ -167,18 +198,25 @@ install_fonts() {
 }
 
 # Link configuration files
-link_config() {
-    local USER_HOME
-    USER_HOME=$(getent passwd "${SUDO_USER:-$USER}" | cut -d: -f6)
-
-    print_colored "$YELLOW" "Linking configuration files..."
-    if [ -f "$USER_HOME/.zshrc" ]; then
-        mv "$USER_HOME/.zshrc" "$USER_HOME/.zshrc.bak"
-        print_colored "$YELLOW" "Existing .zshrc backed up to .zshrc.bak"
+linkConfig() {
+    local OLD_ZSHRC="$HOME/.zshrc"
+    if [[ -e ${OLD_ZSHRC} ]]; then
+        print_colored "$YELLOW" "Moving old zsh config file to ${HOME}/.zshrc.bak"
+        if ! mv "${OLD_ZSHRC}" "${HOME}/.zshrc.bak"; then
+            print_colored "$RED" "Can't move the old zsh config file!"
+            exit 1
+        fi
     fi
-    ln -svf "$HOME/.zsh/myZSH/.zshrc" "$USER_HOME/.zshrc"
-    $SUDO_CMD chsh -s "$(command -v zsh)" "$USER"
-    print_colored "$GREEN" "Configuration files linked successfully."
+
+    print_colored "$YELLOW" "Making sure the default shell is set to ZSH..."
+    $SUDO_CMD chsh -s "$(command -v zsh)"
+
+    print_colored "$YELLOW" "Linking default starship.toml..."
+    mkdir -p "$HOME/.config"
+    ln -svf "$REPO_DIR/starship.toml" "$HOME/.config/starship.toml"
+
+    print_colored "$YELLOW" "Linking new zsh config file..."
+    ln -svf "$REPO_DIR/.zshrc" "$HOME/.zshrc"
 }
 
 # Main function
@@ -189,8 +227,10 @@ main() {
     install_starship
     install_zoxide
     install_fastfetch
+    create_fastfetch_config
+    install_tgpt
     install_fonts
-    link_config
+    linkConfig
     print_colored "$GREEN" "Installation complete! Restart your shell to see the changes."
 }
 
