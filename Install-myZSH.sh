@@ -109,7 +109,7 @@ install_dependencies() {
 install_starship() {
     print_colored "$YELLOW" "Installing Starship..."
     if ! command_exists starship; then
-        curl -fsSL https://starship.rs/install.sh | bash -s -- -y
+        curl -fsSL https://starship.rs/install.sh | sh -s -- -y
         print_colored "$GREEN" "Starship installed successfully."
     else
         print_colored "$GREEN" "Starship is already installed."
