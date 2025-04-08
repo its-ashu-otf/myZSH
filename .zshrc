@@ -1019,6 +1019,9 @@ bindkey '^e' fzf_i
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+export PATH="HOME/.pyenv/bin:HOME/.pyenv/bin:PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv virtualenv-init -)"
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 [[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -s "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
