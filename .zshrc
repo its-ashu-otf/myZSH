@@ -5,7 +5,7 @@
 # Author: Ashutosh Gupta (its-ashu-otf)
 # Version: 7.0
 # Date: 2025-04-07
-# Description: Zsh configuration file with various customizations and functions.
+# Description: ZSH configuration file with various customizations and functions.
 
 #######################################################
 #                   INTERACTIVITY CHECK               #
@@ -47,20 +47,11 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # Fix for man pages colours
-export FZF_DEFAULT_COMMAND="fdfind --hidden --strip-cwd-prefix --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fdfind --type=d --hidden --strip-cwd-prefix"
-export FZF_DEFAULT_OPTS="--height 70% --layout=reverse --border --color=hl:#2dd4bf"
-export FZF_TMUX_OPTS="-p 100%,100%"
-export FZF_CTRL_T_OPTS="--preview 'batcat --color=always -n --line-range :500 {}' --bind 'enter:execute(nano)'"
-export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
+
 
 # Global variables
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
 REPO_DIR="$HOME/.zsh/myZSH"
-PACKAGER=""
-SUDO_CMD=""
-
 
 #######################################################
 #                       FUNCTIONS                     #  
@@ -68,6 +59,18 @@ SUDO_CMD=""
 
 
 # Update or clone the zsh configuration repository
+
+# Helper functions
+print_colored() {
+    printf "${1}%s${RC}\n" "$2"
+}
+
+# Define color codes using tput for better compatibility
+RC=$(tput sgr0)
+RED=$(tput setaf 1)
+YELLOW=$(tput setaf 3)
+GREEN=$(tput setaf 2)
+
 update-MyZSH() {
     REPO_DIR="$HOME/.zsh/myZSH"
     if [ -d "$REPO_DIR" ]; then
@@ -77,28 +80,29 @@ update-MyZSH() {
         echo "Resetting local changes and syncing with remote..."
         git reset --hard origin/main
         git pull
-        linkConfig
         echo "Repository updated successfully."
     else
         echo "Repository does not exist. Cloning..."
         mkdir -p "$HOME/.zsh"
         cd "$HOME/.zsh"
         git clone https://github.com/its-ashu-otf/myZSH.git
-        cd myZSH
     fi
 
-    local USER_HOME
-    USER_HOME=$(getent passwd "${SUDO_USER:-$USER}" | cut -d: -f6)
-
-    print_colored "$YELLOW" "Linking configuration files..."
-    if [ -f "$USER_HOME/.zshrc" ]; then
-        mv "$USER_HOME/.zshrc" "$USER_HOME/.zshrc.bak"
-        print_colored "$YELLOW" "Existing .zshrc backed up to .zshrc.bak"
+    local OLD_ZSHRC="$HOME/.zshrc"
+    if [[ -e ${OLD_ZSHRC} ]]; then
+        print_colored "$YELLOW" "Moving old zsh config file to ${HOME}/.zshrc.bak"
+        if ! mv "${OLD_ZSHRC}" "${HOME}/.zshrc.bak"; then
+            print_colored "$RED" "Can't move the old zsh config file!"
+            exit 1
+        fi
     fi
-    ln -svf "$HOME/.zsh/myZSH/.zshrc" "$USER_HOME/.zshrc"
-    $SUDO_CMD chsh -s "$(command -v zsh)" "$USER"
-    print_colored "$GREEN" "Configuration files linked successfully."
 
+    print_colored "$YELLOW" "Linking default starship.toml..."
+    mkdir -p "$HOME/.config"
+    ln -svf "$REPO_DIR/starship.toml" "$HOME/.config/starship.toml"
+
+    print_colored "$YELLOW" "Linking new zsh config file..."
+    ln -svf "$REPO_DIR/.zshrc" "$HOME/.zshrc"
 }
 
 #######################################################
