@@ -496,6 +496,10 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 alias sha1='openssl sha1'
 alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
 alias kssh="kitty +kitten ssh"
+alias system-upgrade="sudo apt update & sudo apt full-upgrade -y"
+alias distro-upgrade="sudo apt update & sudo apt dist-upgrade -y"
+alias snano="sudo nano"
+alias ssubl="sudo subl"
 
 #######################################################
 #              MACHINE SPECIFIC ALIAS'S              #
