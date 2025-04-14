@@ -32,7 +32,7 @@ fi
 #               ENVIRONMENT VARIABLES                 #
 #######################################################
 export TERM=xterm-256color
-export AI_PROVIDER=duckduckgo
+export AI_PROVIDER=pollinations
 export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=20000
@@ -423,7 +423,6 @@ alias mv='mv -i'
 alias bd='cd "$OLDPWD"'
 alias history="history 0"
 alias alert='notify-send --urgency=low "$(history | tail -n1)"'
-alias sgpt='tgpt --model meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
