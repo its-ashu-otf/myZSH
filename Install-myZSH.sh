@@ -91,7 +91,7 @@ check_environment() {
 # Install dependencies
 install_dependencies() {
     local DEPENDENCIES=(
-        "zsh" "curl" "git" "tar" "tree" "fzf" "zoxide" "fastfetch"
+        "zsh" "curl" "git" "bat" "tar" "tree" "fzf" "zoxide" "fastfetch"
         "meld" "multitail" "trash-cli" "zsh-autosuggestions"
         "zsh-syntax-highlighting" "grc" "colorize" "eza" "fd-find"
     )
