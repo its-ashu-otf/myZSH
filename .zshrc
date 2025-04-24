@@ -491,17 +491,17 @@ alias mkgz='tar -cvzf'
 alias untar='tar -xvf'
 alias unbz2='tar -xvjf'
 alias ungz='tar -xvzf'
-alias system-update='sudo apt update && sudo apt full-upgrade -y'
 alias fix-install='sudo apt --fix-broken install'
 alias autoremove='sudo apt autoremove -y'
 alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"
 alias sha1='openssl sha1'
 alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
 alias kssh="kitty +kitten ssh"
-alias system-upgrade="sudo apt update & sudo apt full-upgrade -y"
-alias distro-upgrade="sudo apt update & sudo apt dist-upgrade -y"
+alias system-upgrade="sudo apt update && sudo apt full-upgrade -y"
+alias distro-upgrade="sudo apt update && sudo apt dist-upgrade -y"
 alias snano="sudo nano"
 alias ssubl="sudo subl"
+alias snmap='sudo grc nmap'
 
 #######################################################
 #              MACHINE SPECIFIC ALIAS'S              #
