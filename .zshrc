@@ -1,15 +1,17 @@
+#!/usr/bin/env zsh
 # ~/.zshrc file for zsh interactive shells.
 # see /usr/share/doc/zsh/examples/zshrc for examples
 
 # Title: myZSH - Ultimate ZSH Configuration
 # Author: Ashutosh Gupta (its-ashu-otf)
-# Version: 7.0
-# Date: 2025-04-07
+# Version: 7.1
+# Date: 2025-05-12
 # Description: ZSH configuration file with various customizations and functions.
 
 #######################################################
 #                   INTERACTIVITY CHECK               #
 #######################################################
+iatest=$(expr index "$-" i)
 
 if [[ $- == *i* ]]; then
     iatest=1
@@ -23,17 +25,23 @@ fi
 
 # Run fastfetch on terminal startup
 if command -v fastfetch &> /dev/null; then
-    fastfetch
-else
-    echo "fastfetch is not installed. Install it for system info display."
+    # Only run fastfetch if we're in an interactive shell
+    if [[ $- == *i* ]]; then
+        fastfetch
+    fi
 fi
 
 #######################################################
 #               ENVIRONMENT VARIABLES                 #
 #######################################################
+
+shopt -s checkwinsize 		        # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
 export TERM=xterm-256color
 export AI_PROVIDER=pollinations
 export HISTFILE=~/.zsh_history
+export HISTCONTROL=erasedups:ignoredups:ignorespace  # Don't put duplicate lines in the history and do not add lines that start with a space
+shopt -s histappend			# Causes zsh to append to history instead of overwriting it so if you start a new terminal, you have old session history
+PROMPT_COMMAND='history -a'
 export HISTSIZE=10000
 export SAVEHIST=20000
 export HISTTIMEFORMAT="%F %T"
@@ -48,6 +56,10 @@ export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # Fix for man pages colours
 
+# Source global definitions
+if [ -f /etc/zshrc ]; then
+	. /etc/zshrc
+fi
 
 # Global variables
 REPO_URL="https://github.com/its-ashu-otf/myZSH.git"
@@ -532,6 +544,15 @@ linutildev() {
 curl -fsSL https://christitus.com/linuxdev | sh
 }
 
+# changing cat to batcat 
+if command -v bat &> /dev/null || command -v batcat &> /dev/null; then
+    if [ "$DISTRIBUTION" = "redhat" ] || [ "$DISTRIBUTION" = "arch" ]; then
+        alias cat='bat'
+    else
+        alias cat='batcat'
+    fi
+fi
+
 # Extract archives
 extract() {
     for archive in "$@"; do
@@ -552,6 +573,16 @@ extract() {
         fi
     done
 }
+
+# Check if ripgrep is installed
+if command -v rg &> /dev/null; then
+    # Alias grep to rg if ripgrep is installed
+    alias grep='rg'
+else
+    # Alias grep to /usr/bin/grep with GREP_OPTIONS if ripgrep is not installed
+    alias grep="/usr/bin/grep $GREP_OPTIONS"
+fi
+unset GREP_OPTIONS
 
 # Searches for text in all files in the current folder
 ftext() {
@@ -714,20 +745,19 @@ ver() {
 
 # IP address lookup
 alias whatismyip="whatsmyip"
-function whatsmyip ()
-{
-	# Internal IP Lookup.
-	
-	if [ -e /sbin/ip ]; then
-		echo -n "Internal IP: "
-		/sbin/ip addr show wlan0 | grep "inet " | awk '{print $2}' | cut -d'/' -f1
-	else
-		echo -n "Internal IP: "
-		/sbin/ifconfig wlan0 | grep "inet " | awk '{print $2}'
-	fi
-	# External IP Lookup
-	echo -n "External IP: "
-	curl -s ifconfig.me
+function whatsmyip () {
+    # Internal IP Lookup.
+    if command -v ip &> /dev/null; then
+        echo -n "Internal IP: "
+        ip addr show wlan0 | grep "inet " | awk '{print $2}' | cut -d/ -f1
+    else
+        echo -n "Internal IP: "
+        ifconfig wlan0 | grep "inet " | awk '{print $2}'
+    fi
+
+    # External IP Lookup
+    echo -n "External IP: "
+    curl -s ifconfig.me
 }
 
 # View Apache logs
@@ -770,6 +800,7 @@ phpconfig() {
 		sudo updatedb && locate php.ini
 	fi
 }
+
 
 # Edit the MySQL configuration file
 mysqlconfig() {
