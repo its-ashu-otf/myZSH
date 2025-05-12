@@ -34,14 +34,10 @@ fi
 #######################################################
 #               ENVIRONMENT VARIABLES                 #
 #######################################################
-
-shopt -s checkwinsize 		        # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
 export TERM=xterm-256color
 export AI_PROVIDER=pollinations
 export HISTFILE=~/.zsh_history
 export HISTCONTROL=erasedups:ignoredups:ignorespace  # Don't put duplicate lines in the history and do not add lines that start with a space
-shopt -s histappend			# Causes zsh to append to history instead of overwriting it so if you start a new terminal, you have old session history
-PROMPT_COMMAND='history -a'
 export HISTSIZE=10000
 export SAVEHIST=20000
 export HISTTIMEFORMAT="%F %T"
