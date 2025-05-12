@@ -168,7 +168,6 @@ install_tgpt() {
 install_fonts() {
     local FONT_NAME="FiraCode Nerd Font"
     local FONT_DIR="/usr/local/share/fonts"
-    local TEMP_DIR=""
 
     # Ensure required commands are available
     if ! command_exists unzip || ! command_exists fc-list; then
@@ -184,6 +183,7 @@ install_fonts() {
 
     # Create a temporary directory for font installation
     TEMP_DIR=$(mktemp -d) || { print_colored "$RED" "Failed to create temporary directory."; exit 1; }
+    local TEMP_DIR=""
 
     # Ensure cleanup of the temporary directory on exit
     trap 'rm -rf "$TEMP_DIR"' EXIT
