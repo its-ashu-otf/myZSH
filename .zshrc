@@ -4,8 +4,8 @@
 
 # Title: myZSH - Ultimate ZSH Configuration
 # Author: Ashutosh Gupta (its-ashu-otf)
-# Version: 7.1
-# Date: 2025-05-12
+# Version: 7.2
+# Date: 2025-05-24
 # Description: ZSH configuration file with various customizations and functions.
 
 #######################################################
