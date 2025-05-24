@@ -51,6 +51,7 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # Fix for man pages colours
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'" 
 
 # Source global definitions
 if [ -f /etc/zshrc ]; then
@@ -540,14 +541,26 @@ linutildev() {
 curl -fsSL https://christitus.com/linuxdev | sh
 }
 
-# changing cat to batcat 
+# Check if either bat or batcat is installed
 if command -v bat &> /dev/null || command -v batcat &> /dev/null; then
-    if [ "$DISTRIBUTION" = "redhat" ] || [ "$DISTRIBUTION" = "arch" ]; then
-        alias cat='bat'
+    # Determine the available command
+    if command -v bat &> /dev/null; then
+        BAT_CMD="bat"
     else
-        alias cat='batcat'
+        BAT_CMD="batcat"
     fi
+
+    # Set alias based on distribution
+    case "$DISTRIBUTION" in
+        redhat|arch)
+            alias cat="bat"
+            ;;
+        *)
+            alias cat="$BAT_CMD"
+            ;;
+    esac
 fi
+
 
 # Extract archives
 extract() {
