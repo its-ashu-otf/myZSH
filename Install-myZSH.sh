@@ -164,13 +164,13 @@ install_tgpt() {
     fi
 }
 
-# Install fonts
 install_fonts() {
     local FONT_NAME="FiraCode Nerd Font"
     local FONT_DIR="/usr/local/share/fonts"
+    local TEMP_DIR=$(mktemp -d) || { print_colored "$RED" "Failed to create temporary directory."; exit 1; }
 
     # Ensure required commands are available
-    if ! command_exists unzip || ! command_exists fc-list; then
+    if ! command -v unzip >/dev/null || ! command -v fc-list >/dev/null; then
         print_colored "$RED" "Missing required commands: unzip or fc-list. Please install them and try again."
         exit 1
     fi
@@ -181,21 +181,41 @@ install_fonts() {
         return
     fi
 
-    # Create a temporary directory for font installation
-    TEMP_DIR=$(mktemp -d) || { print_colored "$RED" "Failed to create temporary directory."; exit 1; }
-    local TEMP_DIR=""
-
     # Ensure cleanup of the temporary directory on exit
     trap 'rm -rf "$TEMP_DIR"' EXIT
 
     print_colored "$YELLOW" "Installing fonts..."
-    curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip -o "$TEMP_DIR/FiraCode.zip"
-    unzip -o "$TEMP_DIR/FiraCode.zip" -d "$TEMP_DIR/fonts"
-    $SUDO_CMD mkdir -p "$FONT_DIR"
-    $SUDO_CMD mv "$TEMP_DIR/fonts"/*.ttf "$FONT_DIR/"
-    $SUDO_CMD fc-cache -fv
+
+    curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip -o "$TEMP_DIR/FiraCode.zip" || {
+        print_colored "$RED" "Failed to download font zip."
+        exit 1
+    }
+
+    unzip -o "$TEMP_DIR/FiraCode.zip" -d "$TEMP_DIR/fonts" || {
+        print_colored "$RED" "Failed to unzip font archive."
+        exit 1
+    }
+
+    # Ensure SUDO_CMD is defined or default to sudo
+    local SUDO_CMD=${SUDO_CMD:-sudo}
+    $SUDO_CMD mkdir -p "$FONT_DIR" || {
+        print_colored "$RED" "Failed to create font directory. Check permissions."
+        exit 1
+    }
+
+    $SUDO_CMD mv "$TEMP_DIR/fonts"/*.ttf "$FONT_DIR/" || {
+        print_colored "$RED" "Failed to move fonts. Check permissions."
+        exit 1
+    }
+
+    $SUDO_CMD fc-cache -fv || {
+        print_colored "$RED" "Failed to rebuild font cache."
+        exit 1
+    }
+
     print_colored "$GREEN" "Fonts installed successfully."
 }
+
 
 # Link configuration files
 linkConfig() {
