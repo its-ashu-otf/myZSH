@@ -4,8 +4,8 @@
 
 # Title: myZSH - Ultimate ZSH Configuration
 # Author: Ashutosh Gupta (its-ashu-otf)
-# Version: 7.2
-# Date: 2025-05-24
+# Version: 7.3
+# Date: 2025-06-20
 # Description: ZSH configuration file with various customizations and functions.
 
 #######################################################
@@ -449,6 +449,7 @@ alias ping='ping -c 10'
 alias less='less -R'
 alias apt-get='sudo apt-get'
 alias multitail='multitail --no-repeat -c'
+alias yayf="yay -Slq | fzf --multi --preview 'yay -Sii {1}' --preview-window=down:75% | xargs -ro yay -S"
 alias freshclam='sudo freshclam'
 alias vi='nvim'
 alias svi='sudo vi'
@@ -756,17 +757,26 @@ ver() {
 alias whatismyip="whatsmyip"
 function whatsmyip () {
     # Internal IP Lookup.
+	if command -v iw &> /dev/null; then
+	    # try to find correct wlan interface on system. Newer Ubuntu uses wlp
+	    DEV=$(iw dev | awk '/Interface/ {interf=$2} END {print interf}')
+	else
+	    #fail back to trying wlan0
+		DEV=wlan0
+	fi
+
     if command -v ip &> /dev/null; then
         echo -n "Internal IP: "
-        ip addr show wlan0 | grep "inet " | awk '{print $2}' | cut -d/ -f1
+        ip addr show $DEV | grep "inet " | awk '{print $2}' | cut -d/ -f1
     else
         echo -n "Internal IP: "
-        ifconfig wlan0 | grep "inet " | awk '{print $2}'
+        ifconfig $DEV | grep "inet " | awk '{print $2}'
     fi
 
     # External IP Lookup
     echo -n "External IP: "
     curl -s ifconfig.me
+	echo -e
 }
 
 # View Apache logs
