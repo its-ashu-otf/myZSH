@@ -208,7 +208,7 @@ install_fonts() {
         exit 1
     }
 
-    $SUDO_CMD fc-cache -fv || {
+    $SUDO_CMD fc-cache -f || {
         print_colored "$RED" "Failed to rebuild font cache."
         exit 1
     }
@@ -252,6 +252,7 @@ main() {
     install_fonts
     linkConfig
     print_colored "$GREEN" "Installation complete! Restart your shell to see the changes."
+    print_colored "$GREEN" "Made with ❤️ by @its-ashu-otf"
 }
 
 main
