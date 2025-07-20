@@ -153,6 +153,20 @@ create_fastfetch_config() {
     fi
 }
 
+# Install spf
+install_spf() {
+    if ! command -v spf >/dev/null 2>&1; then
+        bash -c "$(curl -fsSL https://superfile.netlify.app/install.sh)"
+        if command -v spf >/dev/null 2>&1; then
+            print_colored "$GREEN" "SuperFile installed successfully."
+        else
+            print_colored "$RED" "SuperFile installation failed."
+        fi
+    else
+        print_colored "$GREEN" "SuperFile is already installed."
+    fi
+}
+
 # Install tgpt
 install_tgpt() {
     print_colored "$YELLOW" "Installing tgpt..."
