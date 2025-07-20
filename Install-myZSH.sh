@@ -262,6 +262,7 @@ main() {
     install_zoxide
     install_fastfetch
     create_fastfetch_config
+    install_spf
     install_tgpt
     install_fonts
     linkConfig
