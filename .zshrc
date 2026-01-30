@@ -1027,6 +1027,21 @@ bindkey '^f' zoxide_i
 #                 PLUGIN INTEGRATIONS                 #
 #######################################################
 
+# Alias apt to nala for better formatting
+apt() { 
+  command nala "$@"
+}
+
+# Wrap sudo to ensure 'sudo apt' also calls nala
+sudo() {
+  if [ "$1" = "apt" ]; then
+    shift
+    command sudo nala "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
