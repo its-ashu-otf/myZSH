@@ -93,7 +93,7 @@ install_dependencies() {
     local DEPENDENCIES=(
         "zsh" "curl" "git" "bat" "tar" "tree" "fzf" "zoxide" "fastfetch"
         "meld" "multitail" "trash-cli" "zsh-autosuggestions" "ripgrep"
-        "zsh-syntax-highlighting" "grc" "colorize" "eza" "fd-find"
+        "zsh-syntax-highlighting" "grc" "colorize" "eza" "fd-find" "nala"
     )
 
     print_colored "$YELLOW" "Installing dependencies..."
